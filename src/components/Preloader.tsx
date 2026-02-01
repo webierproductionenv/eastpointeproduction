@@ -7,49 +7,51 @@ interface PreloaderProps {
 const Preloader: React.FC<PreloaderProps> = ({ onFinish }) => {
   const [progress, setProgress] = useState(0);
   const [exit, setExit] = useState(false);
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
     // Lock body scroll during loading
     document.body.style.overflow = "hidden";
 
+    // Trigger content fade-in
+    const fadeTimer = setTimeout(() => setShowContent(true), 100);
+
     // Simulate loading progress
     const interval = setInterval(() => {
       setProgress((prev) => {
-        // Random increment for a more organic "loading" feel
-        const next = prev + Math.random() * 3;
+        const next = prev + Math.random() * 8; // Smooth increment
         if (next >= 100) {
           clearInterval(interval);
           return 100;
         }
         return next;
       });
-    }, 30);
+    }, 40);
 
-    // Ensure it finishes within a reasonable max time (approx 2.5s)
+    // Ensure completion
     const timeout = setTimeout(() => {
       setProgress(100);
-    }, 2500);
+    }, 2000);
 
     return () => {
       clearInterval(interval);
       clearTimeout(timeout);
+      clearTimeout(fadeTimer);
     };
   }, []);
 
   useEffect(() => {
-    // When progress hits 100%, trigger exit sequence
     if (progress === 100) {
       const exitTimer = setTimeout(() => {
         setExit(true); // Start slide-up animation
 
-        // Wait for animation to finish before unmounting
         const finishTimer = setTimeout(() => {
-          document.body.style.overflow = "unset"; // Restore scroll
+          document.body.style.overflow = "unset";
           onFinish();
-        }, 1000); // Matches the duration-1000 class
+        }, 1200); // Matches transition duration
 
         return () => clearTimeout(finishTimer);
-      }, 500); // Brief pause at 100%
+      }, 600); // Slight pause at 100% to let the user see it completed
 
       return () => clearTimeout(exitTimer);
     }
@@ -57,33 +59,47 @@ const Preloader: React.FC<PreloaderProps> = ({ onFinish }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-[100] bg-primary flex items-center justify-center transition-transform duration-[1000ms] cubic-bezier(0.76, 0, 0.24, 1) ${
+      className={`fixed inset-0 z-[100] flex items-center justify-center bg-[#1c1311] transition-transform duration-[1200ms] cubic-bezier(0.87, 0, 0.13, 1) ${
         exit ? "-translate-y-full" : "translate-y-0"
       }`}
     >
-      <div className="flex flex-col items-center px-4 w-full max-w-md">
-        {/* Brand */}
-        <h1 className="text-4xl md:text-6xl font-serif font-bold text-white tracking-widest mb-3 opacity-0 animate-fade-in-up">
-          EAST POINTE
-        </h1>
-        <p
-          className="text-accent text-[10px] md:text-xs uppercase tracking-[0.4em] mb-16 opacity-0 animate-fade-in-up"
-          style={{ animationDelay: "200ms" }}
-        >
-          Lake Cabin Experience
-        </p>
-
-        {/* Smooth Loading Bar */}
-        <div className="w-full max-w-xs h-[1px] bg-white/10 relative overflow-hidden">
-          <div
-            className="absolute top-0 left-0 h-full bg-accent shadow-[0_0_15px_rgba(212,197,176,0.8)] transition-all duration-75 ease-out"
-            style={{ width: `${progress}%` }}
+      <div
+        className={`relative flex flex-col items-center justify-center w-full max-w-lg px-6 transition-all duration-700 transform ${
+          showContent ? "opacity-100 scale-100" : "opacity-0 scale-95"
+        } ${exit ? "opacity-0 translate-y-[-50px] duration-500" : ""}`}
+      >
+        {/* Background Monogram (Subtle Depth) */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none">
+          <img
+            src="/logo.avif"
+            alt="East Pointe Monogram"
+            className="w-48 h-48 opacity-5"
           />
         </div>
 
-        {/* Percentage (Subtle) */}
-        <div className="mt-4 text-white/20 font-mono text-[10px] tracking-widest">
-          {Math.floor(progress).toString().padStart(3, "0")}%
+        {/* Main Logo Text */}
+        <div className="relative z-10 text-center mb-12">
+          <h1 className="text-4xl md:text-6xl font-serif font-bold text-cream tracking-[0.15em] mb-2 drop-shadow-sm">
+            EAST POINTE
+          </h1>
+          <p className="text-accent/60 text-[10px] md:text-xs uppercase tracking-[0.4em] font-medium">
+            Lake Cabin Experience
+          </p>
+        </div>
+
+        {/* Premium Loading Line */}
+        <div className="relative z-10 w-full max-w-[240px] flex flex-col items-center">
+          <div className="w-full h-[1px] bg-white/10 mb-4 overflow-hidden relative">
+            <div
+              className="absolute top-0 left-0 h-full bg-accent transition-all duration-150 ease-out"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+
+          <div className="flex justify-between w-full text-[10px] font-mono text-accent/50 uppercase tracking-widest">
+            <span>Loading</span>
+            <span>{Math.floor(progress).toString().padStart(3, "0")}%</span>
+          </div>
         </div>
       </div>
     </div>
