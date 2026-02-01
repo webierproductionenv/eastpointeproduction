@@ -402,7 +402,7 @@ const Home: React.FC = () => {
           <FadeIn delay={0}>
             <div className="relative group overflow-hidden h-[500px] cursor-pointer">
               <img
-                src="https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=1500"
+                src="/Home/Hiking.jpeg"
                 alt="Hiking"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
@@ -428,7 +428,7 @@ const Home: React.FC = () => {
           <FadeIn delay={150}>
             <div className="relative group overflow-hidden h-[500px] cursor-pointer">
               <img
-                src="https://images.unsplash.com/photo-1502086223501-681a6a817441?q=80&w=1500"
+                src="/Membership/MembershipHero.webp"
                 alt="Lake"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
@@ -455,7 +455,7 @@ const Home: React.FC = () => {
           <FadeIn delay={300}>
             <div className="relative group overflow-hidden h-[500px] cursor-pointer">
               <img
-                src="https://images.unsplash.com/photo-1516934024742-b461fba47600?q=80&w=1500"
+                src="/Home/Relax.avif"
                 alt="Fishing"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
