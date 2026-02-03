@@ -82,7 +82,7 @@ const ComfortConvenience: React.FC = () => {
       <Hero
         title="Guest Perks"
         subtitle="We've thought of everything, so you don't have to."
-        image="/Amenities/AmenitiesHero.avif"
+        image="/Amenities/AmenitiesHero.jpeg"
         height="large"
       />
 
