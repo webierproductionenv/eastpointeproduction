@@ -180,7 +180,7 @@ const Home: React.FC = () => {
     "@type": "LodgingBusiness",
     name: "East Pointe",
     description:
-      "Luxury lake cabin experience and community nestled in nature near Kansas City.",
+      "Lake cabin experience and community nestled in nature near Kansas City.",
     image: "https://www.eastpointekc.com/logo.avif",
     url: "https://www.eastpointekc.com",
     telephone: "+18005550123",
@@ -204,7 +204,7 @@ const Home: React.FC = () => {
   return (
     <div className="bg-white">
       <SEO
-        title="Luxury Lake Cabin Experience near Kansas City"
+        title="Lake Cabin Experience near Kansas City"
         description="Experience the perfect balance of rugged nature and refined comfort at East Pointe. Luxury lake cabin rentals in Odessa, MO, just minutes from Kansas City."
         image="/Home/LandingImage.avif"
         schema={schema}

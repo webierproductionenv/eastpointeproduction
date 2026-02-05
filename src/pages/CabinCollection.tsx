@@ -261,7 +261,7 @@ const CabinCollection: React.FC = () => {
   return (
     <div className="bg-stone-50 pb-0">
       <SEO
-        title="The Cabin Collection | Luxury Rentals"
+        title="The Cabin Collection | Lake Cabin Rentals"
         description="Explore our hand-picked portfolio of luxury cabins including Bayview, Byrd's Nest, and Aspire. Perfect for family reunions, couples, and retreats in Odessa, MO."
         url="https://www.eastpointekc.com/cabins"
       />
