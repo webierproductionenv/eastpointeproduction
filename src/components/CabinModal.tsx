@@ -43,13 +43,27 @@ const CabinModal: React.FC<CabinModalProps> = ({ cabin, isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
       document.body.style.overflow = "hidden";
       setCurrentImageIndex(0);
     } else {
-      document.body.style.overflow = "unset";
+      const scrollY = document.body.style.top;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
@@ -88,12 +102,12 @@ const CabinModal: React.FC<CabinModalProps> = ({ cabin, isOpen, onClose }) => {
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-0 md:p-6">
         {/* Backdrop */}
         <div
-          className="absolute inset-0 bg-primary/80 backdrop-blur-sm animate-fade-in-fast"
+          className="absolute inset-0 bg-primary/80 backdrop-blur-sm animate-fade-in-fast touch-none"
           onClick={onClose}
         ></div>
 
         {/* Modal Container */}
-        <div className="relative bg-white w-full h-full md:h-[90vh] md:max-w-6xl md:rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row animate-scale-in">
+        <div className="relative bg-white w-full h-[100dvh] md:h-[90vh] md:max-w-6xl md:rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row animate-scale-in">
           {/* Close Button (Mobile & Desktop) */}
           <button
             onClick={onClose}
@@ -109,7 +123,7 @@ const CabinModal: React.FC<CabinModalProps> = ({ cabin, isOpen, onClose }) => {
           </button>
 
           {/* Left Side: Image Gallery */}
-          <div className="w-full md:w-1/2 bg-stone-100 relative flex flex-col h-[40vh] md:h-full group">
+          <div className="w-full md:w-1/2 bg-stone-100 relative flex flex-col h-[40dvh] md:h-full group">
             {cabin.images.length > 0 ? (
               <div
                 className="relative flex-grow overflow-hidden cursor-zoom-in"
@@ -183,7 +197,7 @@ const CabinModal: React.FC<CabinModalProps> = ({ cabin, isOpen, onClose }) => {
           </div>
 
           {/* Right Side: Content */}
-          <div className="w-full md:w-1/2 bg-white flex flex-col h-[60vh] md:h-full">
+          <div className="w-full md:w-1/2 bg-white flex flex-col flex-1 md:h-full overflow-hidden">
             {/* Scrollable Content */}
             <div className="flex-grow overflow-y-auto p-8 md:p-12 space-y-8 custom-scrollbar">
               {/* Header */}
@@ -288,7 +302,7 @@ const CabinModal: React.FC<CabinModalProps> = ({ cabin, isOpen, onClose }) => {
             </div>
 
             {/* Sticky Footer Action */}
-            <div className="p-6 border-t border-stone-100 bg-white shadow-[0_-5px_20px_rgba(0,0,0,0.05)] flex items-center justify-between">
+            <div className="px-6 pt-6 pb-[calc(1rem+env(safe-area-inset-bottom))] md:pb-6 border-t border-stone-100 bg-white shadow-[0_-5px_20px_rgba(0,0,0,0.05)] flex items-center justify-between">
               <div>
                 <p className="text-xs text-stone-400 uppercase tracking-widest mb-1">
                   Status

@@ -12,7 +12,7 @@ interface SEOProps {
 const SEO: React.FC<SEOProps> = ({
   title,
   description,
-  image = "/logo.png",
+  image = "/logo.avif",
   url = "https://www.eastpointekc.com",
   type = "website",
   schema,

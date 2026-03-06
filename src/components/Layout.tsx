@@ -20,18 +20,37 @@ const Layout: React.FC = () => {
 
   const toggleMenu = () => {
     if (isMenuOpen) {
-      // enhanced closing experience
       setIsMenuOpen(false);
-      document.body.style.overflow = "unset";
+      const scrollY = document.body.style.top;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
     } else {
+      const scrollY = window.scrollY;
       setIsMenuOpen(true);
-      document.body.style.overflow = "hidden"; // Prevent background scrolling
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
     }
   };
 
   const closeMenu = () => {
-    setIsMenuOpen(false);
-    document.body.style.overflow = "unset";
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+      const scrollY = document.body.style.top;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
+    }
   };
 
   useEffect(() => {
@@ -138,11 +157,11 @@ const Layout: React.FC = () => {
             </nav>
 
             {/* Right Actions */}
-            <div className="flex items-center gap-6 relative z-50">
+            <div className="flex items-center gap-3 md:gap-6 relative z-50">
               {/* CTA Button */}
               <NavLink
                 to="/cabins"
-                className={`hidden md:flex items-center gap-2 px-6 py-2.5 border text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-2.5 border text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                   isMenuOpen
                     ? "border-white/30 text-white hover:bg-white hover:text-primary"
                     : isScrolled || !isHome
