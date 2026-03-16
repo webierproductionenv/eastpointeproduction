@@ -249,10 +249,20 @@ const Home: React.FC = () => {
             </h2>
             <div className="w-24 h-[1px] bg-secondary mx-auto mb-10"></div>
             <p className="text-stone-500 text-lg md:text-xl leading-relaxed mb-12 max-w-2xl mx-auto">
-              East Pointe isn't just a destination; it's a feeling. We provide
-              the perfect balance of rugged nature and refined comfort, ensuring
-              that your escape into the woods doesn't mean leaving civilization
-              behind.
+              At EastPointe, the land and environment mean everything to us. Our
+              cabins are intentionally built using reclaimed and recycled wood
+              and materials. Because of this, you may notice that nothing is
+              perfectly uniform — and that’s part of the beauty. Each cabin
+              carries its own character and story, built from materials given a
+              second life instead of being sent to a landfill. This rustic style
+              is by design. We believe there is beauty in imperfection, and we
+              hope you’ll appreciate the uniqueness and craftsmanship that make
+              this place so special. While you’re here, take time to slow down.
+              Walk the roads, visit the lake, and enjoy the peaceful
+              surroundings. Our lighthouses and features throughout the property
+              each have their own story as well. Most of all, we hope your time
+              here brings you peace, rest, and a chance to reconnect with what
+              matters most. Thank you for being part of the EastPointe story.
             </p>
             <Link
               to="/cabins"
