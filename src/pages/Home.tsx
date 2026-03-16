@@ -248,7 +248,7 @@ const Home: React.FC = () => {
               <span className="italic text-secondary">perfect lake escape</span>
             </h2>
             <div className="w-24 h-[1px] bg-secondary mx-auto mb-10"></div>
-            <p className="text-stone-500 text-lg md:text-xl leading-relaxed mb-12 max-w-2xl mx-auto">
+            <p className="text-stone-500 text-lg md:text-xl leading-relaxed mb-12 w-full mx-auto px-4">
               At EastPointe, the land and environment mean everything to us. Our
               cabins are intentionally built using reclaimed and recycled wood
               and materials. Because of this, you may notice that nothing is
