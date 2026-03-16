@@ -239,7 +239,7 @@ const Home: React.FC = () => {
       {/* --- INTRO / PHILOSOPHY --- */}
       <section className="py-24 md:py-32 container mx-auto px-6 text-center">
         <FadeIn>
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-10/11 mx-auto">
             <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-6 block">
               Our Philosophy
             </span>
