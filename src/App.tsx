@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import CabinCollection from "./pages/CabinCollection";
@@ -28,6 +29,7 @@ const App: React.FC = () => {
           </Route>
         </Routes>
       </HashRouter>
+      <Analytics />
     </>
   );
 };
