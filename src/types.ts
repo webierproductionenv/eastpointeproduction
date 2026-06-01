@@ -5,6 +5,7 @@ export enum AppRoute {
   GATHER = "/gather",
   BEYOND = "/beyond",
   FAMILY = "/family",
+  BOOKING = "/booking",
 }
 
 export interface NavItem {

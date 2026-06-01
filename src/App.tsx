@@ -8,6 +8,7 @@ import GatherConnect from "./pages/GatherConnect";
 import BeyondCabin from "./pages/BeyondCabin";
 import BecomeFamily from "./pages/BecomeFamily";
 import StudioPage from "./pages/Studio";
+import Booking from "./pages/Booking";
 import Preloader from "./components/Preloader";
 import { AppRoute } from "./types";
 
@@ -26,6 +27,7 @@ const App: React.FC = () => {
             <Route path={AppRoute.GATHER} element={<GatherConnect />} />
             <Route path={AppRoute.BEYOND} element={<BeyondCabin />} />
             <Route path={AppRoute.FAMILY} element={<BecomeFamily />} />
+            <Route path={AppRoute.BOOKING} element={<Booking />} />
           </Route>
           <Route path="/studio/*" element={<StudioPage />} />
         </Routes>
