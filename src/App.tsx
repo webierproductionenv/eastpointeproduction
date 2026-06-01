@@ -7,6 +7,7 @@ import ComfortConvenience from "./pages/ComfortConvenience";
 import GatherConnect from "./pages/GatherConnect";
 import BeyondCabin from "./pages/BeyondCabin";
 import BecomeFamily from "./pages/BecomeFamily";
+import StudioPage from "./pages/Studio";
 import Preloader from "./components/Preloader";
 import { AppRoute } from "./types";
 
@@ -26,6 +27,7 @@ const App: React.FC = () => {
             <Route path={AppRoute.BEYOND} element={<BeyondCabin />} />
             <Route path={AppRoute.FAMILY} element={<BecomeFamily />} />
           </Route>
+          <Route path="/studio/*" element={<StudioPage />} />
         </Routes>
       </HashRouter>
     </>

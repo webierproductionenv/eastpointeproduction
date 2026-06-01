@@ -15,6 +15,9 @@ import {
 import CabinModal, { CabinData } from "../components/CabinModal";
 import ImageViewer from "../components/ImageViewer";
 import SEO from "../components/SEO";
+import { useSanity } from "../hooks/useSanity";
+import { CABIN_PAGE_QUERY, CABINS_QUERY } from "../lib/queries";
+import { getImageUrl } from "../lib/sanity";
 
 // --- Animation Hook & Component ---
 
@@ -250,6 +253,18 @@ const CabinCollection: React.FC = () => {
   const [selectedCabin, setSelectedCabin] = useState<CabinData | null>(null);
   const [isMapOpen, setIsMapOpen] = useState(false);
 
+  // --- Sanity CMS Data ---
+  const { data: pageData } = useSanity<any>(CABIN_PAGE_QUERY);
+  const { data: cmsCabins } = useSanity<any[]>(CABINS_QUERY);
+
+  const hero = pageData?.hero;
+  const intro = pageData?.intro;
+  const seoData = pageData?.seo;
+  const comeSeeUs = pageData?.comeSeeUs;
+
+  // Use CMS cabins if available, otherwise fallback to hardcoded
+  const displayCabins = (cmsCabins && cmsCabins.length > 0) ? cmsCabins : cabins;
+
   const openModal = (cabin: CabinData) => {
     setSelectedCabin(cabin);
   };
@@ -261,15 +276,15 @@ const CabinCollection: React.FC = () => {
   return (
     <div className="bg-stone-50 pb-0">
       <SEO
-        title="The Cabin Collection | Lake Cabin Rentals"
-        description="Explore our hand-picked portfolio of luxury cabins including Bayview, Byrd's Nest, and Aspire. Perfect for family reunions, couples, and retreats in Odessa, MO."
+        title={seoData?.title || "The Cabin Collection | Lake Cabin Rentals"}
+        description={seoData?.description || "Explore our hand-picked portfolio of luxury cabins including Bayview, Byrd's Nest, and Aspire. Perfect for family reunions, couples, and retreats in Odessa, MO."}
         url="https://www.eastpointekc.com/cabins"
       />
 
       <Hero
-        title="Lake Cabin Collection"
-        subtitle="Discover our range of cabins designed to accommodate all group sizes, whether you're planning a cozy getaway for two or a lively retreat for a large gathering."
-        image="/Cabin/CabinHero.avif"
+        title={hero?.title || "Lake Cabin Collection"}
+        subtitle={hero?.subtitle || "Discover our range of cabins designed to accommodate all group sizes, whether you're planning a cozy getaway for two or a lively retreat for a large gathering."}
+        image={getImageUrl(hero?.image, "/Cabin/CabinHero.avif")}
         height="large"
       />
 
@@ -283,15 +298,13 @@ const CabinCollection: React.FC = () => {
       <section className="bg-white pt-20 pb-12">
         <div className="container mx-auto px-6 text-center max-w-3xl">
           <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4 block">
-            Our Portfolio
+            {intro?.label || "Our Portfolio"}
           </span>
           <h2 className="text-3xl md:text-5xl font-serif text-primary mb-8">
-            Find Your Perfect Escape
+            {intro?.title || "Find Your Perfect Escape"}
           </h2>
           <p className="text-stone-600 text-lg leading-relaxed font-light">
-            Each cabin is thoughtfully crafted to match your vacation
-            intentions. Click on any cabin below to view full details, sleeping
-            arrangements, and amenities.
+            {intro?.body || "Each cabin is thoughtfully crafted to match your vacation intentions. Click on any cabin below to view full details, sleeping arrangements, and amenities."}
           </p>
         </div>
       </section>
@@ -299,7 +312,7 @@ const CabinCollection: React.FC = () => {
       {/* Cabins Grid */}
       <section className="container mx-auto px-6 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-          {cabins.map((cabin, idx) => {
+          {displayCabins.map((cabin, idx) => {
             const hasImages = cabin.images.length > 0;
             return (
               <div

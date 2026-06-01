@@ -21,6 +21,10 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
+import { useSanity, useSanityMultiple } from "../hooks/useSanity";
+import { HOME_PAGE_QUERY, TESTIMONIALS_QUERY, SITE_SETTINGS_QUERY } from "../lib/queries";
+import { getImageUrl } from "../lib/sanity";
+import { getIcon } from "../lib/iconMap";
 
 // --- Animation Hook & Component ---
 
@@ -115,6 +119,22 @@ const Home: React.FC = () => {
   const [isHovered, setIsHovered] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
 
+  // --- Sanity CMS Data ---
+  const { data: pageData } = useSanity<any>(HOME_PAGE_QUERY);
+  const { data: testimonials } = useSanity<any[]>(TESTIMONIALS_QUERY);
+  const { data: siteSettings } = useSanity<any>(SITE_SETTINGS_QUERY);
+
+  // Merge CMS data with fallbacks
+  const hero = pageData?.hero;
+  const philosophy = pageData?.philosophy;
+  const cms_carousel = pageData?.carouselItems;
+  const immersive = pageData?.immersiveSection;
+  const experiences = pageData?.experiences;
+  const locationData = pageData?.locationSection;
+  const amenitiesPreview = pageData?.amenitiesPreview;
+  const ctaData = pageData?.ctaSection;
+  const seoData = pageData?.seo;
+
   // Initialize scroll position to the middle set on load
   useEffect(() => {
     if (sliderRef.current) {
@@ -204,16 +224,16 @@ const Home: React.FC = () => {
   return (
     <div className="bg-white">
       <SEO
-        title="Luxury Lake Cabin Experience near Kansas City"
-        description="Experience the perfect balance of rugged nature and refined comfort at East Pointe. Luxury lake cabin rentals in Odessa, MO, just minutes from Kansas City."
-        image="/Home/LandingImage.avif"
+        title={seoData?.title || "Luxury Lake Cabin Experience near Kansas City"}
+        description={seoData?.description || "Experience the perfect balance of rugged nature and refined comfort at East Pointe. Luxury lake cabin rentals in Odessa, MO, just minutes from Kansas City."}
+        image={getImageUrl(seoData?.image, "/Home/LandingImage.avif")}
         schema={schema}
       />
 
       {/* --- HERO SECTION --- */}
       <div className="relative h-screen w-full overflow-hidden">
         <img
-          src="/Home/LandingImage.avif"
+          src={getImageUrl(hero?.image, "/Home/LandingImage.avif")}
           alt="East Pointe Luxury Cabins"
           className="absolute inset-0 w-full h-full object-cover animate-scale-in"
         />
@@ -223,10 +243,10 @@ const Home: React.FC = () => {
 
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center text-white px-4 animate-fade-in-up">
           <h1 className="text-5xl md:text-8xl font-serif font-bold mb-6 tracking-tight drop-shadow-lg">
-            East Pointe
+            {hero?.title || "East Pointe"}
           </h1>
           <p className="text-xl md:text-2xl font-light tracking-widest text-stone-100 drop-shadow-md max-w-2xl mx-auto uppercase">
-            Lake Cabin Experience
+            {hero?.subtitle || "Lake Cabin Experience"}
           </p>
         </div>
 
@@ -241,7 +261,7 @@ const Home: React.FC = () => {
         <FadeIn>
           <div className="max-w-10/11 mx-auto">
             <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-6 block">
-              Our Philosophy
+              {philosophy?.label || "Our Philosophy"}
             </span>
             <h2 className="text-3xl md:text-6xl font-serif text-primary mb-10 leading-tight">
               Discover the{" "}
@@ -249,27 +269,13 @@ const Home: React.FC = () => {
             </h2>
             <div className="w-24 h-[1px] bg-secondary mx-auto mb-10"></div>
             <p className="text-stone-500 text-lg md:text-xl leading-relaxed mb-12 w-full mx-auto px-4">
-              Welcome to EastPointe At EastPointe, the land, the environment,
-              and our faith in GOD mean everything to us. Our cabins are
-              intentionally built using reclaimed and recycled wood and
-              materials. Because of this, you may notice that nothing is
-              perfectly uniform — and that’s part of the beauty. Each cabin
-              carries its own character and story, built from materials given a
-              second life instead of being sent to a landfill. This rustic style
-              is by design. We believe there is beauty in imperfection, and we
-              hope you’ll appreciate the uniqueness and craftsmanship that make
-              this place so special. While you’re here, take time to slow down.
-              Walk the roads, visit the lake, and enjoy the peaceful
-              surroundings. Our lighthouses and features throughout the property
-              each have their own story as well. Most of all, we hope your time
-              here brings you peace, rest, and a chance to reconnect with what
-              matters most. Thank you for being part of the EastPointe story.
+              {philosophy?.body || "Welcome to EastPointe At EastPointe, the land, the environment, and our faith in GOD mean everything to us. Our cabins are intentionally built using reclaimed and recycled wood and materials. This rustic style is by design. We believe there is beauty in imperfection. While you're here, take time to slow down. Walk the roads, visit the lake, and enjoy the peaceful surroundings. Most of all, we hope your time here brings you peace, rest, and a chance to reconnect with what matters most. Thank you for being part of the EastPointe story."}
             </p>
             <Link
-              to="/cabins"
+              to={philosophy?.linkUrl || "/cabins"}
               className="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-xs hover:text-secondary transition-colors border-b border-primary hover:border-secondary pb-1"
             >
-              Explore Our Philosophy
+              {philosophy?.linkText || "Explore Our Philosophy"}
             </Link>
           </div>
         </FadeIn>
@@ -362,7 +368,7 @@ const Home: React.FC = () => {
           {/* Image Side (Left) - Height Driven by Image */}
           <div className="md:w-1/2">
             <img
-              src="/Map.avif"
+              src={getImageUrl(immersive?.mapImage, "/Map.avif")}
               alt="Property Map"
               className="w-full h-auto block"
             />
@@ -374,21 +380,19 @@ const Home: React.FC = () => {
 
             <FadeIn className="relative z-10 max-w-lg">
               <span className="text-accent text-xs font-bold uppercase tracking-widest mb-4 block">
-                The Surroundings
+                {immersive?.label || "The Surroundings"}
               </span>
               <h2 className="text-4xl md:text-5xl font-serif mb-8 leading-tight">
-                Beyond the Cabin
+                {immersive?.title || "Beyond the Cabin"}
               </h2>
               <p className="text-stone-300 text-lg mb-10 leading-relaxed font-light">
-                Step outside and immerse yourself in the breathtaking landscapes
-                that surround our properties. Hiking trails, alpine lakes, and
-                hidden waterfalls await just minutes from your doorstep.
+                {immersive?.body || "Step outside and immerse yourself in the breathtaking landscapes that surround our properties. Hiking trails, alpine lakes, and hidden waterfalls await just minutes from your doorstep."}
               </p>
               <Link
-                to="/beyond"
+                to={immersive?.linkUrl || "/beyond"}
                 className="px-10 py-4 border border-cream/30 text-cream hover:bg-cream hover:text-primary transition-all duration-300 font-bold uppercase text-xs tracking-[0.2em]"
               >
-                Discover the Area
+                {immersive?.linkText || "Discover the Area"}
               </Link>
             </FadeIn>
           </div>
@@ -801,32 +805,30 @@ const Home: React.FC = () => {
       <section
         className="relative py-40 bg-fixed bg-cover bg-center group"
         style={{
-          backgroundImage: 'url("/Home/HomeCTA.avif")',
+          backgroundImage: `url("${getImageUrl(ctaData?.backgroundImage, '/Home/HomeCTA.avif')}")`,
         }}
       >
-        {/* Subtle hover effect: Starts at 50% opacity, fades to 25% opacity on hover */}
         <div className="absolute inset-0 bg-black/50 transition-colors duration-700 ease-in-out group-hover:bg-black/25"></div>
         <div className="relative z-10 container mx-auto px-6 text-center">
           <FadeIn>
             <h2 className="text-4xl md:text-7xl font-serif text-white mb-8 drop-shadow-lg">
-              Ready to Escape?
+              {ctaData?.title || "Ready to Escape?"}
             </h2>
             <p className="text-xl md:text-2xl text-stone-100 mb-12 max-w-2xl mx-auto font-light drop-shadow-md">
-              Join our family of travelers and experience the difference of a
-              true luxury retreat.
+              {ctaData?.subtitle || "Join our family of travelers and experience the difference of a true luxury retreat."}
             </p>
             <div className="flex flex-col md:flex-row gap-6 justify-center">
               <Link
-                to="/cabins"
+                to={ctaData?.primaryButtonLink || "/cabins"}
                 className="px-12 py-5 bg-accent text-primary font-bold uppercase tracking-[0.2em] hover:bg-white transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1"
               >
-                Book Your Stay
+                {ctaData?.primaryButtonText || "Book Your Stay"}
               </Link>
               <Link
-                to="/family"
+                to={ctaData?.secondaryButtonLink || "/family"}
                 className="px-12 py-5 border border-white/50 backdrop-blur-sm text-white font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-primary transition-all duration-300 hover:-translate-y-1"
               >
-                Become a Member
+                {ctaData?.secondaryButtonText || "Become a Member"}
               </Link>
             </div>
           </FadeIn>
