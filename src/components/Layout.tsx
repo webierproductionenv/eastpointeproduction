@@ -160,7 +160,7 @@ const Layout: React.FC = () => {
             <div className="flex items-center gap-3 md:gap-6 relative z-50">
               {/* CTA Button */}
               <NavLink
-                to="/booking"
+                to="/contact"
                 className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-2.5 border text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
                   isMenuOpen
                     ? "border-white/30 text-white hover:bg-white hover:text-primary"
@@ -169,7 +169,7 @@ const Layout: React.FC = () => {
                       : "border-white text-white hover:bg-white hover:text-primary"
                 }`}
               >
-                Book Now
+                Contact
               </NavLink>
 
               {/* Menu Toggle Button (Visible on Laptops/Tablets/Mobile) */}
@@ -279,11 +279,11 @@ const Layout: React.FC = () => {
               </div>
 
               <NavLink
-                to="/booking"
+                to="/contact"
                 onClick={closeMenu}
                 className="bg-accent text-primary px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,197,176,0.3)] flex items-center gap-3"
               >
-                Book Your Stay <ArrowRight size={16} />
+                Contact Us <ArrowRight size={16} />
               </NavLink>
             </div>
           </div>

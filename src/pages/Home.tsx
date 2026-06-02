@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
+import ContactSection from "../components/ContactSection";
 import { useSanity, useSanityMultiple } from "../hooks/useSanity";
 import { HOME_PAGE_QUERY, TESTIMONIALS_QUERY, SITE_SETTINGS_QUERY } from "../lib/queries";
 import { getImageUrl } from "../lib/sanity";
@@ -834,6 +835,8 @@ const Home: React.FC = () => {
           </FadeIn>
         </div>
       </section>
+
+      <ContactSection />
     </div>
   );
 };

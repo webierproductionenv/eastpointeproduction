@@ -1,21 +1,57 @@
 import React from "react";
 import Hero from "../components/Hero";
-import { Check, Mail, Phone, ArrowRight } from "lucide-react";
+import { Check, Mail, Phone } from "lucide-react";
 import SEO from "../components/SEO";
+import ContactSection from "../components/ContactSection";
+import { useSanity } from "../hooks/useSanity";
+import { MEMBERSHIP_PAGE_QUERY } from "../lib/queries";
+import { getImageUrl } from "../lib/sanity";
+
+const defaultBenefits = [
+  "Priority booking access 6 months in advance",
+  "10% off all stays, year-round",
+  "Complimentary late check-out",
+  "Exclusive invitations to community events"
+];
+
+const defaultSteps = [
+  {
+    title: "Inquire",
+    description: "Contact our team via email or phone to express your interest."
+  },
+  {
+    title: "Connect",
+    description: "We'll schedule a brief call to discuss your preferences."
+  },
+  {
+    title: "Welcome",
+    description: "Receive your digital membership card and booking codes."
+  }
+];
 
 const BecomeFamily: React.FC = () => {
+  const { data: pageData } = useSanity<any>(MEMBERSHIP_PAGE_QUERY);
+
+  const hero = pageData?.hero;
+  const leftPanel = pageData?.leftPanel;
+  const rightPanel = pageData?.rightPanel;
+  const seoData = pageData?.seo;
+
+  const benefits = leftPanel?.benefits && leftPanel.benefits.length > 0 ? leftPanel.benefits : defaultBenefits;
+  const steps = rightPanel?.steps && rightPanel.steps.length > 0 ? rightPanel.steps : defaultSteps;
+
   return (
     <div className="bg-stone-50">
       <SEO
-        title="Membership & Exclusive Perks"
-        description="Become an East Pointe member for exclusive booking priority, discounts, and access to private community events."
+        title={seoData?.title || "Membership & Exclusive Perks"}
+        description={seoData?.description || "Become an East Pointe member for exclusive booking priority, discounts, and access to private community events."}
         url="https://www.eastpointekc.com/family"
       />
 
       <Hero
-        title="Membership"
-        subtitle="Join our exclusive community of nature lovers and luxury seekers."
-        image="https://picsum.photos/1920/1080?random=8"
+        title={hero?.title || "Membership"}
+        subtitle={hero?.subtitle || "Join our exclusive community of nature lovers and luxury seekers."}
+        image={getImageUrl(hero?.image, "https://picsum.photos/1920/1080?random=8")}
         height="medium"
       />
 
@@ -29,54 +65,28 @@ const BecomeFamily: React.FC = () => {
 
               <div className="relative z-10">
                 <span className="text-accent text-xs font-bold uppercase tracking-[0.2em] mb-4 block">
-                  The Inner Circle
+                  {leftPanel?.label || "The Inner Circle"}
                 </span>
                 <h2 className="text-3xl md:text-4xl font-serif mb-8 leading-tight">
-                  Why Join East Pointe?
+                  {leftPanel?.title || "Why Join East Pointe?"}
                 </h2>
                 <p className="mb-10 text-stone-300 font-light leading-relaxed">
-                  Members enjoy exclusive perks, priority booking windows, and
-                  discounted rates across all our luxury properties.
+                  {leftPanel?.body || "Members enjoy exclusive perks, priority booking windows, and discounted rates across all our luxury properties."}
                 </p>
                 <ul className="space-y-6">
-                  <li className="flex items-start">
-                    <div className="p-1 bg-accent/20 rounded-full mr-4 mt-0.5">
-                      <Check className="text-accent" size={16} />
-                    </div>
-                    <span className="text-stone-200">
-                      Priority booking access 6 months in advance
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="p-1 bg-accent/20 rounded-full mr-4 mt-0.5">
-                      <Check className="text-accent" size={16} />
-                    </div>
-                    <span className="text-stone-200">
-                      10% off all stays, year-round
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="p-1 bg-accent/20 rounded-full mr-4 mt-0.5">
-                      <Check className="text-accent" size={16} />
-                    </div>
-                    <span className="text-stone-200">
-                      Complimentary late check-out
-                    </span>
-                  </li>
-                  <li className="flex items-start">
-                    <div className="p-1 bg-accent/20 rounded-full mr-4 mt-0.5">
-                      <Check className="text-accent" size={16} />
-                    </div>
-                    <span className="text-stone-200">
-                      Exclusive invitations to community events
-                    </span>
-                  </li>
+                  {benefits.map((benefit: string, idx: number) => (
+                    <li key={idx} className="flex items-start">
+                      <div className="p-1 bg-accent/20 rounded-full mr-4 mt-0.5">
+                        <Check className="text-accent" size={16} />
+                      </div>
+                      <span className="text-stone-200">{benefit}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="mt-12 pt-8 border-t border-white/10 relative z-10">
                 <p className="text-sm text-accent italic font-serif">
-                  "East Pointe isn't just a place to stay; it's a place to
-                  belong."
+                  "{leftPanel?.quote || "East Pointe isn't just a place to stay; it's a place to belong."}"
                 </p>
               </div>
             </div>
@@ -84,49 +94,26 @@ const BecomeFamily: React.FC = () => {
             {/* Right Side: Contact / Process */}
             <div className="md:w-1/2 p-10 md:p-14 flex flex-col justify-center bg-white">
               <h3 className="text-3xl font-serif text-primary mb-6">
-                Become a Member
+                {rightPanel?.title || "Become a Member"}
               </h3>
               <p className="text-stone-500 leading-relaxed mb-8 font-light">
-                We are currently accepting a limited number of new families into
-                the East Pointe community. To ensure the privacy and quality of
-                our retreats, we handle all applications personally.
+                {rightPanel?.body || "We are currently accepting a limited number of new families into the East Pointe community. To ensure the privacy and quality of our retreats, we handle all applications personally."}
               </p>
 
               <div className="space-y-6">
-                <div className="bg-stone-50 p-6 rounded-sm border border-stone-100">
-                  <h4 className="font-bold text-primary mb-2 flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-full bg-accent text-primary flex items-center justify-center text-xs">
-                      1
-                    </span>
-                    Inquire
-                  </h4>
-                  <p className="text-sm text-stone-500 pl-8">
-                    Contact our team via email or phone to express your
-                    interest.
-                  </p>
-                </div>
-                <div className="bg-stone-50 p-6 rounded-sm border border-stone-100">
-                  <h4 className="font-bold text-primary mb-2 flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-full bg-accent text-primary flex items-center justify-center text-xs">
-                      2
-                    </span>
-                    Connect
-                  </h4>
-                  <p className="text-sm text-stone-500 pl-8">
-                    We'll schedule a brief call to discuss your preferences.
-                  </p>
-                </div>
-                <div className="bg-stone-50 p-6 rounded-sm border border-stone-100">
-                  <h4 className="font-bold text-primary mb-2 flex items-center gap-2">
-                    <span className="w-6 h-6 rounded-full bg-accent text-primary flex items-center justify-center text-xs">
-                      3
-                    </span>
-                    Welcome
-                  </h4>
-                  <p className="text-sm text-stone-500 pl-8">
-                    Receive your digital membership card and booking codes.
-                  </p>
-                </div>
+                {steps.map((step: any, idx: number) => (
+                  <div key={idx} className="bg-stone-50 p-6 rounded-sm border border-stone-100">
+                    <h4 className="font-bold text-primary mb-2 flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-accent text-primary flex items-center justify-center text-xs">
+                        {idx + 1}
+                      </span>
+                      {step.title}
+                    </h4>
+                    <p className="text-sm text-stone-500 pl-8">
+                      {step.description}
+                    </p>
+                  </div>
+                ))}
               </div>
 
               <div className="mt-10 space-y-4">
@@ -147,6 +134,8 @@ const BecomeFamily: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <ContactSection />
     </div>
   );
 };

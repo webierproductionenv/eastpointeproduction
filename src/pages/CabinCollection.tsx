@@ -472,12 +472,12 @@ const CabinCollection: React.FC = () => {
           <div className="lg:col-span-1 h-[500px] lg:h-[680px] relative rounded-sm overflow-hidden shadow-xl group border-4 border-white bg-stone-900">
             <video
               className="w-full h-full object-cover"
-              poster="/Cabin/EastPointeAerial_thumb.avif"
+              poster={getImageUrl(pageData?.videoPoster, "/Cabin/EastPointeAerial_thumb.avif")}
               controls
               playsInline
             >
               <source
-                src="https://res.cloudinary.com/dusub2qg5/video/upload/v1769971765/EastPointeAerial_ve13um.mp4"
+                src={pageData?.videoUrl || "https://res.cloudinary.com/dusub2qg5/video/upload/v1769971765/EastPointeAerial_ve13um.mp4"}
                 type="video/mp4"
               />
               Your browser does not support the video tag.
@@ -497,7 +497,7 @@ const CabinCollection: React.FC = () => {
             onClick={() => setIsMapOpen(true)}
           >
             <img
-              src="/Map.avif"
+              src={getImageUrl(pageData?.mapImage, "/Map.avif")}
               alt="East Pointe Property Map"
               className="w-full h-full object-cover"
             />
@@ -541,14 +541,13 @@ const CabinCollection: React.FC = () => {
                 <MapPin className="text-accent" size={24} />
               </div>
               <h2 className="text-4xl md:text-5xl font-serif mb-6 leading-tight">
-                Come See Us
+                {comeSeeUs?.title || "Come See Us"}
               </h2>
               <p className="text-xl text-stone-300 mb-8 font-light">
-                Visit our offices to explore our stunning lakeside cabins!
+                {comeSeeUs?.subtitle || "Visit our offices to explore our stunning lakeside cabins!"}
               </p>
               <p className="text-stone-400 leading-relaxed mb-10 max-w-lg">
-                Experience the serene surroundings firsthand and discover your
-                perfect getaway. We look forward to welcoming you!
+                {comeSeeUs?.body || "Experience the serene surroundings firsthand and discover your perfect getaway. We look forward to welcoming you!"}
               </p>
 
               <div className="flex flex-col gap-6">
@@ -616,7 +615,7 @@ const CabinCollection: React.FC = () => {
       <ImageViewer
         isOpen={isMapOpen}
         onClose={() => setIsMapOpen(false)}
-        images={["/Map.avif"]}
+        images={[getImageUrl(pageData?.mapImage, "/Map.avif")]}
       />
     </div>
   );

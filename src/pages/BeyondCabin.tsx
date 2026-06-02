@@ -15,20 +15,82 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "../components/SEO";
+import { useSanity } from "../hooks/useSanity";
+import { EXPLORE_PAGE_QUERY } from "../lib/queries";
+import { getImageUrl } from "../lib/sanity";
+import { getIcon } from "../lib/iconMap";
+
+const defaultDiscoverCards = [
+  {
+    category: "Championship City",
+    title: "Chiefs & Royals",
+    description: "Experience the thrill of Arrowhead Stadium or a classic ballgame at Kauffman Stadium. A short drive for an unforgettable game day.",
+    image: "/Explore/ChiefsAndRoyals.avif",
+    icon: "Trophy",
+    isWide: false,
+  },
+  {
+    category: "History & Arts",
+    title: "Union Station & Museums",
+    description: "Visit the iconic Union Station, the beautiful Nelson-Atkins Museum of Art, and the National WWI Museum.",
+    image: "/Explore/UnionStation.avif",
+    icon: "Building2",
+    isWide: false,
+  },
+  {
+    category: "Nightlife",
+    title: "Power & Light District",
+    description: "Immerse yourself in the rhythm of the 18th & Vine Jazz District or the vibrant energy of the Power & Light District.",
+    image: "/Explore/PowerAndLight.avif",
+    icon: "Music",
+    isWide: false,
+  },
+  {
+    category: "Shopping & Dining",
+    title: "Country Club Plaza",
+    description: "Enjoy premier shopping and indulge in legendary Kansas City BBQ at renowned restaurants throughout the city.",
+    image: "/Explore/CountryPlaza.avif",
+    icon: "ShoppingBag",
+    isWide: false,
+  },
+  {
+    category: "Nature & Flora",
+    title: "Powell Gardens",
+    description: "Kansas City's premier botanical garden, set on 970 acres of lush meadows and diverse gardens just minutes away.",
+    image: "/Explore/Powell.webp",
+    icon: "Leaf",
+    isWide: true,
+  }
+];
 
 const BeyondCabin: React.FC = () => {
+  const { data: pageData } = useSanity<any>(EXPLORE_PAGE_QUERY);
+
+  const hero = pageData?.hero;
+  const intro = pageData?.intro;
+  const quoteSection = pageData?.quoteSection;
+  const discoverSection = pageData?.discoverSection;
+  const seoData = pageData?.seo;
+
+  const displayDiscoverCards = discoverSection?.cards && discoverSection.cards.length > 0
+    ? discoverSection.cards.map((card: any) => ({
+        ...card,
+        image: getImageUrl(card.image, ""),
+      }))
+    : defaultDiscoverCards;
+
   return (
     <div className="bg-stone-50">
       <SEO
-        title="Things to Do in Odessa & Kansas City"
-        description="Discover hiking trails, lake activities, and the vibrant culture of Kansas City just a short drive away from East Pointe. The best of both worlds."
+        title={seoData?.title || "Things to Do in Odessa & Kansas City"}
+        description={seoData?.description || "Discover hiking trails, lake activities, and the vibrant culture of Kansas City just a short drive away from East Pointe. The best of both worlds."}
         url="https://www.eastpointekc.com/beyond"
       />
 
       <Hero
-        title="Explore the Region"
-        subtitle="Your ideal lake getaway, just a quick drive from the heart of Kansas City."
-        image="/Explore/ExploreHero.avif"
+        title={hero?.title || "Explore the Region"}
+        subtitle={hero?.subtitle || "Your ideal lake getaway, just a quick drive from the heart of Kansas City."}
+        image={getImageUrl(hero?.image, "/Explore/ExploreHero.avif")}
         height="large"
       />
 
@@ -38,28 +100,22 @@ const BeyondCabin: React.FC = () => {
           <div className="flex flex-col md:flex-row items-center gap-16">
             <div className="md:w-1/2">
               <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4 block">
-                The Best of Both Worlds
+                {intro?.label || "The Best of Both Worlds"}
               </span>
               <h2 className="text-4xl md:text-5xl font-serif text-primary mb-8 leading-tight">
-                A Quick Drive from KC
+                {intro?.title || "A Quick Drive from KC"}
               </h2>
               <p className="text-stone-600 text-lg leading-relaxed font-light mb-6">
-                Escape the hustle and bustle of the city and enjoy a stay at our
-                charming lake cabins in Odessa, MO. Perfectly situated just
-                outside the Kansas City Metropolitan area, East Pointe offers
-                the ultimate compromise: rugged seclusion when you want it, and
-                city excitement when you need it.
+                {intro?.body1 || "Escape the hustle and bustle of the city and enjoy a stay at our charming lake cabins in Odessa, MO. Perfectly situated just outside the Kansas City Metropolitan area, East Pointe offers the ultimate compromise: rugged seclusion when you want it, and city excitement when you need it."}
               </p>
               <p className="text-stone-600 text-lg leading-relaxed font-light">
-                Whether you are in town for a Chiefs game, a Royals match, or
-                simply exploring the rich culture of the Midwest, our cabins
-                serve as your adventurous basecamp.
+                {intro?.body2 || "Whether you are in town for a Chiefs game, a Royals match, or simply exploring the rich culture of the Midwest, our cabins serve as your adventurous basecamp."}
               </p>
             </div>
             <div className="md:w-1/2 relative">
               <div className="absolute top-4 left-4 w-full h-full border-2 border-accent rounded-sm z-0"></div>
               <img
-                src="/Explore/QuickDrive.avif"
+                src={getImageUrl(intro?.image, "/Explore/QuickDrive.avif")}
                 alt="Scenic Drive"
                 className="relative z-10 w-full h-[400px] object-cover rounded-sm shadow-xl"
               />
@@ -68,12 +124,11 @@ const BeyondCabin: React.FC = () => {
         </div>
       </section>
 
-      {/* Elegant Statement Section (Replaces Marquee) */}
+      {/* Elegant Statement Section */}
       <section
         className="relative py-32 bg-fixed bg-center bg-cover"
         style={{
-          backgroundImage:
-            'url("https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1920")',
+          backgroundImage: `url("${getImageUrl(quoteSection?.backgroundImage, 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1920')}")`,
         }}
       >
         <div className="absolute inset-0 bg-primary/90 mix-blend-multiply"></div>
@@ -84,8 +139,7 @@ const BeyondCabin: React.FC = () => {
             </div>
           </div>
           <h3 className="text-3xl md:text-5xl font-serif text-white leading-tight max-w-5xl mx-auto drop-shadow-xl">
-            "Experience the tranquility of lakeside living while maintaining
-            easy access to the city's excitement."
+            "{quoteSection?.quote || "Experience the tranquility of lakeside living while maintaining easy access to the city's excitement."}"
           </h3>
           <div className="w-24 h-[1px] bg-accent mx-auto mt-12 opacity-60"></div>
         </div>
@@ -95,136 +149,44 @@ const BeyondCabin: React.FC = () => {
       <section className="py-24 container mx-auto px-6">
         <div className="text-center max-w-4xl mx-auto mb-20">
           <h2 className="text-4xl md:text-5xl font-serif text-primary mb-6">
-            Discover Kansas City
+            {discoverSection?.title || "Discover Kansas City"}
           </h2>
           <p className="text-stone-500 text-lg font-light leading-relaxed">
-            Explore the vibrant city known for its rich history, cultural
-            attractions, and exciting entertainment options. From world-class
-            BBQ to championship sports, it's all within reach.
+            {discoverSection?.subtitle || "Explore the vibrant city known for its rich history, cultural attractions, and exciting entertainment options. From world-class BBQ to championship sports, it's all within reach."}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Card 1: Sports */}
-          <div className="group relative overflow-hidden rounded-sm h-[400px] shadow-lg">
-            <img
-              src="/Explore/ChiefsAndRoyals.avif"
-              alt="KC Sports"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-10 flex flex-col justify-end">
-              <div className="flex items-center gap-3 text-accent mb-2">
-                <Trophy size={24} />
-                <span className="text-xs font-bold uppercase tracking-widest">
-                  Championship City
-                </span>
-              </div>
-              <h3 className="text-3xl font-serif text-white mb-4">
-                Chiefs & Royals
-              </h3>
-              <p className="text-stone-300 font-light mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0">
-                Experience the thrill of Arrowhead Stadium or a classic ballgame
-                at Kauffman Stadium. A short drive for an unforgettable game
-                day.
-              </p>
-            </div>
-          </div>
+          {displayDiscoverCards.map((card: any, idx: number) => {
+            const Icon = getIcon(card.icon) || Trophy;
+            const cardClasses = card.isWide
+              ? "group relative overflow-hidden rounded-sm h-[400px] shadow-lg md:col-span-2 lg:col-span-1 lg:col-start-1 lg:col-end-3"
+              : "group relative overflow-hidden rounded-sm h-[400px] shadow-lg";
 
-          {/* Card 2: Culture */}
-          <div className="group relative overflow-hidden rounded-sm h-[400px] shadow-lg">
-            <img
-              src="/Explore/UnionStation.avif"
-              alt="Union Station"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-10 flex flex-col justify-end">
-              <div className="flex items-center gap-3 text-accent mb-2">
-                <Building2 size={24} />
-                <span className="text-xs font-bold uppercase tracking-widest">
-                  History & Arts
-                </span>
+            return (
+              <div key={idx} className={cardClasses}>
+                <img
+                  src={card.image}
+                  alt={card.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-10 flex flex-col justify-end">
+                  <div className="flex items-center gap-3 text-accent mb-2">
+                    <Icon size={24} />
+                    <span className="text-xs font-bold uppercase tracking-widest">
+                      {card.category}
+                    </span>
+                  </div>
+                  <h3 className="text-3xl font-serif text-white mb-4">
+                    {card.title}
+                  </h3>
+                  <p className="text-stone-300 font-light mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0">
+                    {card.description}
+                  </p>
+                </div>
               </div>
-              <h3 className="text-3xl font-serif text-white mb-4">
-                Union Station & Museums
-              </h3>
-              <p className="text-stone-300 font-light mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0">
-                Visit the iconic Union Station, the beautiful Nelson-Atkins
-                Museum of Art, and the National WWI Museum.
-              </p>
-            </div>
-          </div>
-
-          {/* Card 3: Entertainment */}
-          <div className="group relative overflow-hidden rounded-sm h-[400px] shadow-lg">
-            <img
-              src="/Explore/PowerAndLight.avif"
-              alt="Nightlife"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-10 flex flex-col justify-end">
-              <div className="flex items-center gap-3 text-accent mb-2">
-                <Music size={24} />
-                <span className="text-xs font-bold uppercase tracking-widest">
-                  Nightlife
-                </span>
-              </div>
-              <h3 className="text-3xl font-serif text-white mb-4">
-                Power & Light District
-              </h3>
-              <p className="text-stone-300 font-light mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0">
-                Immerse yourself in the rhythm of the 18th & Vine Jazz District
-                or the vibrant energy of the Power & Light District.
-              </p>
-            </div>
-          </div>
-
-          {/* Card 4: Shopping & Dining */}
-          <div className="group relative overflow-hidden rounded-sm h-[400px] shadow-lg">
-            <img
-              src="/Explore/CountryPlaza.avif"
-              alt="Plaza"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-10 flex flex-col justify-end">
-              <div className="flex items-center gap-3 text-accent mb-2">
-                <ShoppingBag size={24} />
-                <span className="text-xs font-bold uppercase tracking-widest">
-                  Shopping & Dining
-                </span>
-              </div>
-              <h3 className="text-3xl font-serif text-white mb-4">
-                Country Club Plaza
-              </h3>
-              <p className="text-stone-300 font-light mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0">
-                Enjoy premier shopping and indulge in legendary Kansas City BBQ
-                at renowned restaurants throughout the city.
-              </p>
-            </div>
-          </div>
-
-          {/* Card 5: Powell Gardens */}
-          <div className="group relative overflow-hidden rounded-sm h-[400px] shadow-lg md:col-span-2 lg:col-span-1 lg:col-start-1 lg:col-end-3">
-            <img
-              src="/Explore/Powell.webp"
-              alt="Powell Gardens"
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-10 flex flex-col justify-end">
-              <div className="flex items-center gap-3 text-accent mb-2">
-                <Leaf size={24} />
-                <span className="text-xs font-bold uppercase tracking-widest">
-                  Nature & Flora
-                </span>
-              </div>
-              <h3 className="text-3xl font-serif text-white mb-4">
-                Powell Gardens
-              </h3>
-              <p className="text-stone-300 font-light mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform translate-y-4 group-hover:translate-y-0">
-                Kansas City's premier botanical garden, set on 970 acres of lush
-                meadows and diverse gardens just minutes away.
-              </p>
-            </div>
-          </div>
+            );
+          })}
         </div>
 
         {/* Link to Cabin Collection */}

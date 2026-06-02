@@ -17,6 +17,10 @@ import {
   Fish,
 } from "lucide-react";
 import SEO from "../components/SEO";
+import { useSanity } from "../hooks/useSanity";
+import { AMENITIES_PAGE_QUERY, AMENITIES_QUERY } from "../lib/queries";
+import { getImageUrl } from "../lib/sanity";
+import { getIcon } from "../lib/iconMap";
 
 const amenities = [
   {
@@ -87,18 +91,31 @@ const amenities = [
 ];
 
 const ComfortConvenience: React.FC = () => {
+  const { data: pageData } = useSanity<any>(AMENITIES_PAGE_QUERY);
+  const { data: cmsAmenities } = useSanity<any[]>(AMENITIES_QUERY);
+
+  const hero = pageData?.hero;
+  const intro = pageData?.intro;
+  const seoData = pageData?.seo;
+
+  const displayAmenities = cmsAmenities && cmsAmenities.length > 0 ? cmsAmenities.map(item => ({
+    icon: getIcon(item.icon),
+    title: item.title,
+    desc: item.description,
+  })) : amenities;
+
   return (
     <div className="bg-stone-50">
       <SEO
-        title="Cabin Amenities & Guest Perks"
-        description="Enjoy 5-star amenities: High-speed Wifi, self check-in, private fire pits, chef's kitchens, and more. Your comfort is our priority at East Pointe."
+        title={seoData?.title || "Cabin Amenities & Guest Perks"}
+        description={seoData?.description || "Enjoy 5-star amenities: High-speed Wifi, self check-in, private fire pits, chef's kitchens, and more. Your comfort is our priority at East Pointe."}
         url="https://www.eastpointekc.com/comfort"
       />
 
       <Hero
-        title="Guest Perks"
-        subtitle="We've thought of everything, so you don't have to."
-        image="/Amenities/AmenitiesHero.jpeg"
+        title={hero?.title || "Guest Perks"}
+        subtitle={hero?.subtitle || "We've thought of everything, so you don't have to."}
+        image={getImageUrl(hero?.image, "/Amenities/AmenitiesHero.jpeg")}
         height="large"
       />
 
@@ -106,16 +123,13 @@ const ComfortConvenience: React.FC = () => {
       <section className="py-24 bg-white">
         <div className="container mx-auto px-6 text-center max-w-4xl">
           <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4 block">
-            Our Amenities
+            {intro?.label || "Our Amenities"}
           </span>
           <h2 className="text-3xl md:text-5xl font-serif text-primary mb-8">
-            Comfort & Convenience
+            {intro?.title || "Comfort & Convenience"}
           </h2>
           <p className="text-stone-600 leading-relaxed text-lg font-light mb-12">
-            Explore the fantastic amenities waiting for you in each cabin. We
-            integrate thoughtful services to ensure your time with us is
-            seamless from check-in to check-out. We can't wait for you to find
-            your perfect getaway retreat with us!
+            {intro?.body || "Explore the fantastic amenities waiting for you in each cabin. We integrate thoughtful services to ensure your time with us is seamless from check-in to check-out. We can't wait for you to find your perfect getaway retreat with us!"}
           </p>
           <div className="w-24 h-[1px] bg-secondary mx-auto"></div>
         </div>
@@ -124,22 +138,25 @@ const ComfortConvenience: React.FC = () => {
       {/* Amenities Grid */}
       <section className="py-20 container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {amenities.map((item, idx) => (
-            <div
-              key={idx}
-              className="group bg-white p-10 rounded-sm shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 flex flex-col items-center text-center border border-stone-100"
-            >
-              <div className="w-16 h-16 bg-stone-50 rounded-full flex items-center justify-center text-stone-400 group-hover:bg-primary group-hover:text-accent transition-all duration-500 mb-6">
-                <item.icon size={28} strokeWidth={1.5} />
+          {displayAmenities.map((item: any, idx: number) => {
+            const Icon = item.icon || Car;
+            return (
+              <div
+                key={idx}
+                className="group bg-white p-10 rounded-sm shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-1 flex flex-col items-center text-center border border-stone-100"
+              >
+                <div className="w-16 h-16 bg-stone-50 rounded-full flex items-center justify-center text-stone-400 group-hover:bg-primary group-hover:text-accent transition-all duration-500 mb-6">
+                  <Icon size={28} strokeWidth={1.5} />
+                </div>
+                <h3 className="text-xl font-serif font-bold text-primary mb-4 group-hover:text-secondary transition-colors">
+                  {item.title}
+                </h3>
+                <p className="text-stone-500 leading-relaxed text-sm font-light">
+                  {item.desc}
+                </p>
               </div>
-              <h3 className="text-xl font-serif font-bold text-primary mb-4 group-hover:text-secondary transition-colors">
-                {item.title}
-              </h3>
-              <p className="text-stone-500 leading-relaxed text-sm font-light">
-                {item.desc}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 

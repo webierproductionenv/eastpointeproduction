@@ -9,24 +9,64 @@ import {
   Briefcase,
   Users,
   Wine,
-  ArrowRight,
   Navigation,
 } from "lucide-react";
 import SEO from "../components/SEO";
+import { useSanity } from "../hooks/useSanity";
+import { COMMUNITY_PAGE_QUERY } from "../lib/queries";
+import { getImageUrl } from "../lib/sanity";
+import { getIcon } from "../lib/iconMap";
+
+const defaultEventCards = [
+  {
+    title: "Intimate Weddings",
+    description: "Say \"I do\" with the lake as your witness. Our grounds provide a stunning, natural cathedral for ceremonies up to 50 guests.",
+    image: "/Community/Wedding.avif",
+    icon: "Heart",
+    features: ["Lakeside Ceremonies", "Bridal Cabin Packages", "Photography Access"]
+  },
+  {
+    title: "Family Reunions",
+    description: "Reconnect without distractions. Book multiple cabins to keep the family close while giving everyone their own private space.",
+    image: "/Community/Reunion.avif",
+    icon: "Users",
+    features: ["Communal Fire Pits", "Large Group Dining", "Safe Kids Play Areas"]
+  },
+  {
+    title: "Corporate Retreats",
+    description: "Step away from the boardroom. Our inspiring environment fosters creativity, team bonding, and strategic thinking.",
+    image: "/Community/Corporate.avif",
+    icon: "Briefcase",
+    features: ["High-Speed Wifi", "Team Building Activities", "Catering Partners"]
+  }
+];
 
 const GatherConnect: React.FC = () => {
+  const { data: pageData } = useSanity<any>(COMMUNITY_PAGE_QUERY);
+
+  const hero = pageData?.hero;
+  const intro = pageData?.intro;
+  const seoData = pageData?.seo;
+  const eventCards = pageData?.eventCards;
+  const concierge = pageData?.concierge;
+
+  const displayEventCards = eventCards && eventCards.length > 0 ? eventCards.map((card: any) => ({
+    ...card,
+    image: getImageUrl(card.image, ""),
+  })) : defaultEventCards;
+
   return (
     <div className="bg-stone-50">
       <SEO
-        title="Weddings, Reunions & Corporate Retreats"
-        description="Host your intimate wedding, family reunion, or corporate retreat at East Pointe. A stunning lakeside backdrop for unforgettable gatherings."
+        title={seoData?.title || "Weddings, Reunions & Corporate Retreats"}
+        description={seoData?.description || "Host your intimate wedding, family reunion, or corporate retreat at East Pointe. A stunning lakeside backdrop for unforgettable gatherings."}
         url="https://www.eastpointekc.com/gather"
       />
 
       <Hero
-        title="Gather & Celebrate"
-        subtitle="Create lasting memories in the heart of nature."
-        image="/Community/CommunityHero.avif"
+        title={hero?.title || "Gather & Celebrate"}
+        subtitle={hero?.subtitle || "Create lasting memories in the heart of nature."}
+        image={getImageUrl(hero?.image, "/Community/CommunityHero.avif")}
         height="large"
       />
 
@@ -34,16 +74,13 @@ const GatherConnect: React.FC = () => {
       <section className="py-24 bg-white">
         <div className="container mx-auto px-6 text-center max-w-4xl">
           <span className="text-accent text-sm font-bold uppercase tracking-[0.2em] mb-4 block">
-            Hosted at East Pointe
+            {intro?.label || "Hosted at East Pointe"}
           </span>
           <h2 className="text-3xl md:text-5xl font-serif text-primary mb-8">
-            Unforgettable Gatherings
+            {intro?.title || "Unforgettable Gatherings"}
           </h2>
           <p className="text-stone-600 leading-relaxed text-lg font-light mb-8">
-            East Pointe isn't just for quiet getaways; it's a vibrant backdrop
-            for your most important milestones. From intimate lakeside weddings
-            to productive corporate retreats, our grounds offer the perfect
-            blend of privacy and community.
+            {intro?.body || "East Pointe isn't just for quiet getaways; it's a vibrant backdrop for your most important milestones. From intimate lakeside weddings to productive corporate retreats, our grounds offer the perfect blend of privacy and community."}
           </p>
           <div className="w-24 h-[1px] bg-secondary mx-auto mt-12"></div>
         </div>
@@ -52,116 +89,41 @@ const GatherConnect: React.FC = () => {
       {/* Event Inspiration Grid */}
       <section className="pb-24 container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Card 1: Weddings */}
-          <div className="group bg-white rounded-sm shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden">
-            <div className="h-64 overflow-hidden relative">
-              <img
-                src="/Community/Wedding.avif"
-                alt="Weddings"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute top-4 right-4 bg-white/90 p-3 rounded-full text-primary">
-                <Heart size={20} />
+          {displayEventCards.map((card: any, idx: number) => {
+            const Icon = getIcon(card.icon) || Heart;
+            return (
+              <div key={idx} className={`group bg-white rounded-sm shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden ${idx === 1 ? 'transform md:-translate-y-4' : ''}`}>
+                <div className="h-64 overflow-hidden relative">
+                  <img
+                    src={card.image}
+                    alt={card.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute top-4 right-4 bg-white/90 p-3 rounded-full text-primary">
+                    <Icon size={20} />
+                  </div>
+                </div>
+                <div className="p-8">
+                  <h3 className="text-2xl font-serif text-primary mb-3">
+                    {card.title}
+                  </h3>
+                  <p className="text-stone-500 font-light mb-6 leading-relaxed">
+                    {card.description}
+                  </p>
+                  {card.features && (
+                    <ul className="space-y-2 text-sm text-stone-600 mb-6">
+                      {card.features.map((feature: string, fIdx: number) => (
+                        <li key={fIdx} className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>{" "}
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="p-8">
-              <h3 className="text-2xl font-serif text-primary mb-3">
-                Intimate Weddings
-              </h3>
-              <p className="text-stone-500 font-light mb-6 leading-relaxed">
-                Say "I do" with the lake as your witness. Our grounds provide a
-                stunning, natural cathedral for ceremonies up to 50 guests.
-              </p>
-              <ul className="space-y-2 text-sm text-stone-600 mb-6">
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>{" "}
-                  Lakeside Ceremonies
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>{" "}
-                  Bridal Cabin Packages
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>{" "}
-                  Photography Access
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Card 2: Reunions */}
-          <div className="group bg-white rounded-sm shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden transform md:-translate-y-4">
-            <div className="h-64 overflow-hidden relative">
-              <img
-                src="/Community/Reunion.avif"
-                alt="Reunions"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute top-4 right-4 bg-white/90 p-3 rounded-full text-primary">
-                <Users size={20} />
-              </div>
-            </div>
-            <div className="p-8">
-              <h3 className="text-2xl font-serif text-primary mb-3">
-                Family Reunions
-              </h3>
-              <p className="text-stone-500 font-light mb-6 leading-relaxed">
-                Reconnect without distractions. Book multiple cabins to keep the
-                family close while giving everyone their own private space.
-              </p>
-              <ul className="space-y-2 text-sm text-stone-600 mb-6">
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>{" "}
-                  Communal Fire Pits
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>{" "}
-                  Large Group Dining
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>{" "}
-                  Safe Kids Play Areas
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Card 3: Retreats */}
-          <div className="group bg-white rounded-sm shadow-sm hover:shadow-2xl transition-all duration-500 overflow-hidden">
-            <div className="h-64 overflow-hidden relative">
-              <img
-                src="/Community/Corporate.avif"
-                alt="Corporate Retreats"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute top-4 right-4 bg-white/90 p-3 rounded-full text-primary">
-                <Briefcase size={20} />
-              </div>
-            </div>
-            <div className="p-8">
-              <h3 className="text-2xl font-serif text-primary mb-3">
-                Corporate Retreats
-              </h3>
-              <p className="text-stone-500 font-light mb-6 leading-relaxed">
-                Step away from the boardroom. Our inspiring environment fosters
-                creativity, team bonding, and strategic thinking.
-              </p>
-              <ul className="space-y-2 text-sm text-stone-600 mb-6">
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>{" "}
-                  High-Speed Wifi
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>{" "}
-                  Team Building Activities
-                </li>
-                <li className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-accent rounded-full"></div>{" "}
-                  Catering Partners
-                </li>
-              </ul>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </section>
 
@@ -178,31 +140,26 @@ const GatherConnect: React.FC = () => {
             <div className="flex items-center gap-3 text-accent mb-4">
               <Wine size={24} />
               <span className="text-xs font-bold uppercase tracking-widest">
-                Personal Concierge
+                {concierge?.label || "Personal Concierge"}
               </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-serif text-white mb-6 leading-tight">
-              Start Planning Your Event
+              {concierge?.title || "Start Planning Your Event"}
             </h2>
             <p className="text-stone-300 text-lg font-light leading-relaxed mb-8">
-              We don't believe in automated forms for your special moments.
-              Every event at East Pointe is tailored specifically to your
-              vision. Connect directly with our Events Coordinator to discuss
-              availability, packages, and custom arrangements.
+              {concierge?.body || "We don't believe in automated forms for your special moments. Every event at East Pointe is tailored specifically to your vision. Connect directly with our Events Coordinator to discuss availability, packages, and custom arrangements."}
             </p>
             <div className="flex flex-col gap-4">
-              <p className="flex items-center gap-3 text-stone-300">
-                <div className="w-2 h-2 bg-accent rounded-full"></div>
-                Custom layout planning
-              </p>
-              <p className="flex items-center gap-3 text-stone-300">
-                <div className="w-2 h-2 bg-accent rounded-full"></div>
-                Vendor recommendations (Catering, Florals, etc.)
-              </p>
-              <p className="flex items-center gap-3 text-stone-300">
-                <div className="w-2 h-2 bg-accent rounded-full"></div>
-                Group accommodation discounts
-              </p>
+              {(concierge?.bulletPoints || [
+                "Custom layout planning",
+                "Vendor recommendations (Catering, Florals, etc.)",
+                "Group accommodation discounts"
+              ]).map((point: string, idx: number) => (
+                <p key={idx} className="flex items-center gap-3 text-stone-300">
+                  <div className="w-2 h-2 bg-accent rounded-full"></div>
+                  {point}
+                </p>
+              ))}
             </div>
           </div>
 
@@ -246,7 +203,7 @@ const GatherConnect: React.FC = () => {
             </div>
 
             <p className="text-center text-stone-500 text-sm mt-8 italic">
-              Office Hours: Mon-Fri, 9am - 5pm CST
+              {concierge?.officeHours || "Office Hours: Mon-Fri, 9am - 5pm CST"}
             </p>
           </div>
         </div>

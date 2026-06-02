@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Calendar, Users, Mail, User, Mountain, ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
+import { Mail, User, Mountain, ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
 
-const Booking: React.FC = () => {
+const ContactSection: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -9,8 +9,6 @@ const Booking: React.FC = () => {
     setStatus('submitting');
     
     const formData = new FormData(e.currentTarget);
-    
-    // Use the Web3Forms access key from your environment variables
     const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY?.trim() || "";
     formData.append("access_key", accessKey);
 
@@ -35,7 +33,7 @@ const Booking: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cream relative pt-32 pb-24 px-6 overflow-hidden flex items-center justify-center">
+    <section className="bg-cream relative py-24 px-6 overflow-hidden flex items-center justify-center">
       {/* Decorative Background Elements */}
       <Mountain className="absolute -bottom-24 -left-24 w-[600px] h-[600px] text-earth/5 pointer-events-none" />
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-accent/20 rounded-full blur-[120px] pointer-events-none"></div>
@@ -45,15 +43,14 @@ const Booking: React.FC = () => {
         {/* Left Side: Typography & Info */}
         <div className="flex flex-col animate-fade-in-up">
           <span className="text-secondary font-bold uppercase tracking-[0.2em] text-sm mb-4">
-            Reserve Your Experience
+            Get In Touch
           </span>
           <h1 className="text-5xl md:text-7xl font-serif text-primary leading-tight mb-8">
-            Book Your <br />
-            <span className="italic text-secondary">Stay</span>
+            Contact <br />
+            <span className="italic text-secondary">Us</span>
           </h1>
           <p className="text-stone-600 text-lg md:text-xl font-light leading-relaxed max-w-lg mb-10">
-            Escape to East Pointe. Disconnect from the noise and reconnect with nature in our luxury lake cabins. 
-            Fill out the request form below and our team will get back to you to confirm your reservation.
+            Have questions about East Pointe? Reach out to us below and our team will get back to you shortly.
           </p>
           
           <div className="hidden lg:flex flex-col gap-6 border-l-2 border-accent/40 pl-8">
@@ -74,10 +71,10 @@ const Booking: React.FC = () => {
           <div className="absolute inset-0 border border-primary/10 m-2 pointer-events-none"></div>
           
           <form onSubmit={handleSubmit} className="relative z-10 flex flex-col gap-8">
-            <input type="hidden" name="subject" value="New Booking Request from East Pointe" />
+            <input type="hidden" name="subject" value="New Contact Request from East Pointe" />
             <input type="hidden" name="from_name" value="Eastpointe Resort" />
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 gap-8">
               {/* Full Name */}
               <div className="relative group">
                 <label htmlFor="name" className="text-[10px] font-bold uppercase tracking-widest text-stone-400 absolute -top-5 left-0 group-focus-within:text-secondary transition-colors">
@@ -91,7 +88,7 @@ const Booking: React.FC = () => {
               </div>
 
               {/* Email Address */}
-              <div className="relative group">
+              <div className="relative group mt-4">
                 <label htmlFor="email" className="text-[10px] font-bold uppercase tracking-widest text-stone-400 absolute -top-5 left-0 group-focus-within:text-secondary transition-colors">
                   Email Address
                 </label>
@@ -103,51 +100,13 @@ const Booking: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-2">
-              {/* Check-in Date */}
-              <div className="relative group">
-                <label htmlFor="checkin" className="text-[10px] font-bold uppercase tracking-widest text-stone-400 absolute -top-5 left-0 group-focus-within:text-secondary transition-colors">
-                  Check-in Date
-                </label>
-                <div className="flex items-center border-b border-stone-200 py-2 transition-colors group-focus-within:border-secondary">
-                  <Calendar className="text-stone-300 w-5 h-5 mr-3 group-focus-within:text-secondary transition-colors" />
-                  <input type="date" id="checkin" name="checkin" required 
-                    className="w-full bg-transparent text-primary font-medium focus:outline-none placeholder:text-stone-300 placeholder:font-light [color-scheme:light]" />
-                </div>
-              </div>
-
-              {/* Check-out Date */}
-              <div className="relative group">
-                <label htmlFor="checkout" className="text-[10px] font-bold uppercase tracking-widest text-stone-400 absolute -top-5 left-0 group-focus-within:text-secondary transition-colors">
-                  Check-out Date
-                </label>
-                <div className="flex items-center border-b border-stone-200 py-2 transition-colors group-focus-within:border-secondary">
-                  <Calendar className="text-stone-300 w-5 h-5 mr-3 group-focus-within:text-secondary transition-colors" />
-                  <input type="date" id="checkout" name="checkout" required 
-                    className="w-full bg-transparent text-primary font-medium focus:outline-none placeholder:text-stone-300 placeholder:font-light [color-scheme:light]" />
-                </div>
-              </div>
-
-              {/* Guests */}
-              <div className="relative group">
-                <label htmlFor="guests" className="text-[10px] font-bold uppercase tracking-widest text-stone-400 absolute -top-5 left-0 group-focus-within:text-secondary transition-colors">
-                  Number of Guests
-                </label>
-                <div className="flex items-center border-b border-stone-200 py-2 transition-colors group-focus-within:border-secondary">
-                  <Users className="text-stone-300 w-5 h-5 mr-3 group-focus-within:text-secondary transition-colors" />
-                  <input type="number" id="guests" name="guests" min="1" required placeholder="2" 
-                    className="w-full bg-transparent text-primary font-medium focus:outline-none placeholder:text-stone-300 placeholder:font-light" />
-                </div>
-              </div>
-            </div>
-
-            {/* Special Requests */}
+            {/* Message */}
             <div className="relative group mt-4">
               <label htmlFor="message" className="text-[10px] font-bold uppercase tracking-widest text-stone-400 absolute -top-5 left-0 group-focus-within:text-secondary transition-colors">
-                Special Requests (Optional)
+                Message
               </label>
               <div className="border-b border-stone-200 py-2 transition-colors group-focus-within:border-secondary">
-                <textarea id="message" name="message" placeholder="Tell us about any special requirements..." rows={3}
+                <textarea id="message" name="message" required placeholder="How can we help you?" rows={3}
                   className="w-full bg-transparent text-primary font-medium focus:outline-none placeholder:text-stone-300 placeholder:font-light resize-none" />
               </div>
             </div>
@@ -158,7 +117,7 @@ const Booking: React.FC = () => {
               disabled={status === 'submitting'}
               className="mt-6 w-full bg-primary text-cream py-4 font-bold uppercase tracking-widest text-xs hover:bg-secondary transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group"
             >
-              {status === 'submitting' ? 'Sending Request...' : 'Submit Request'} 
+              {status === 'submitting' ? 'Sending Message...' : 'Send Message'} 
               {status !== 'submitting' && <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />}
             </button>
 
@@ -166,7 +125,7 @@ const Booking: React.FC = () => {
             {status === 'success' && (
               <div className="flex items-center gap-3 text-emerald-600 bg-emerald-50 p-4 mt-2">
                 <CheckCircle size={20} />
-                <p className="text-sm font-medium">Thank you! Your booking request has been sent.</p>
+                <p className="text-sm font-medium">Thank you! Your message has been sent.</p>
               </div>
             )}
             {status === 'error' && (
@@ -178,8 +137,8 @@ const Booking: React.FC = () => {
           </form>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default Booking;
+export default ContactSection;
