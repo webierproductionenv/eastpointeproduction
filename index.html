@@ -136,6 +136,30 @@
         background-repeat: no-repeat;
         background-size: cover;
       }
+      /* Customize Chatbase Chatbot on mobile to prevent full-screen takeover */
+      @media screen and (max-width: 768px) {
+        #chatbase-bubble-window {
+          width: 90% !important;
+          max-width: 420px !important;
+          height: 65vh !important;
+          max-height: 600px !important;
+          background: transparent !important; /* Fixes white backdrop */
+          top: auto !important;                /* Unpins from top */
+          bottom: 90px !important;             /* Positions floating above the close bubble */
+          left: 5% !important;                 /* Centers horizontally */
+          right: 5% !important;
+          margin: 0 auto !important;
+          border-radius: 16px !important;
+          box-shadow: 0 12px 36px rgba(44, 30, 26, 0.25) !important;
+          border: 1px solid rgba(166, 124, 82, 0.2) !important;
+          overflow: hidden !important;
+          transition: all 0.3s ease !important;
+        }
+        #chatbase-bubble-window iframe {
+          border-radius: 16px !important;
+          background: transparent !important; /* Forces iframe body backdrop transparency */
+        }
+      }
     </style>
     <script type="importmap">
       {

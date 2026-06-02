@@ -2,25 +2,35 @@ import { defineType, defineField } from 'sanity'
 
 export default defineType({
   name: 'amenity',
-  title: 'Amenity',
+  title: 'Amenity Item',
   type: 'document',
+  // Group fields into neat tabs
+  groups: [
+    { name: 'basic', title: 'Amenity Details' },
+    { name: 'visual', title: 'Display Settings' },
+  ],
   fields: [
     defineField({
       name: 'title',
       title: 'Amenity Title',
       type: 'string',
+      group: 'basic',
+      description: 'The name of the amenity (e.g. Free High-Speed Wi-Fi, Private Lakeside Dock).',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
+      group: 'basic',
+      description: 'A brief sentence explaining this amenity to guests.',
     }),
     defineField({
       name: 'icon',
-      title: 'Icon Name',
+      title: 'Visual Icon Symbol',
       type: 'string',
-      description: 'Lucide icon name for this amenity',
+      group: 'visual',
+      description: 'Select an icon to visually represent this amenity in features lists.',
       options: {
         list: [
           { title: 'Car (Parking)', value: 'Car' },
@@ -42,8 +52,10 @@ export default defineType({
     }),
     defineField({
       name: 'order',
-      title: 'Display Order',
+      title: 'Display Sort Order',
       type: 'number',
+      group: 'visual',
+      description: 'Lower ranking numbers (e.g., 1, 2) display first in lists.',
     }),
   ],
   orderings: [
@@ -60,3 +72,4 @@ export default defineType({
     },
   },
 })
+
