@@ -16,6 +16,7 @@ import {
   Bookmark,
   Palmtree
 } from 'lucide-react'
+import { SANITY_PROJECT_ID, SANITY_DATASET } from '../lib/env'
 import './studio.css'
 
 // Build a custom luxury theme matching the East Pointe design language
@@ -59,8 +60,8 @@ export default defineConfig({
   icon: BrandLogo, // Custom logo for the workspace
 
   // Sanity Project ID & Dataset configuration
-  projectId: import.meta.env.VITE_SANITY_PROJECT_ID || 'YOUR_PROJECT_ID',
-  dataset: import.meta.env.VITE_SANITY_DATASET || 'production',
+  projectId: SANITY_PROJECT_ID,
+  dataset: SANITY_DATASET,
   basePath: '/studio',
 
   // Custom Studio layout elements

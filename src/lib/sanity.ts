@@ -1,14 +1,12 @@
 import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
+import { SANITY_PROJECT_ID, SANITY_DATASET } from './env';
 
-// ⚠️ REPLACE 'YOUR_PROJECT_ID' with your actual Sanity project ID from sanity.io/manage
-const PROJECT_ID = import.meta.env.VITE_SANITY_PROJECT_ID || 'YOUR_PROJECT_ID';
-const DATASET = import.meta.env.VITE_SANITY_DATASET || 'production';
 const API_VERSION = '2024-01-01';
 
 export const sanityClient = createClient({
-  projectId: PROJECT_ID,
-  dataset: DATASET,
+  projectId: SANITY_PROJECT_ID,
+  dataset: SANITY_DATASET,
   apiVersion: API_VERSION,
   useCdn: true, // `true` for production (cached, fast)
   // No token needed for public read-only access

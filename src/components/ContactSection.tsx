@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Mail, User, Mountain, ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
+import { WEB3FORMS_ACCESS_KEY } from "../lib/env";
 
 const ContactSection: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
@@ -9,8 +10,7 @@ const ContactSection: React.FC = () => {
     setStatus('submitting');
     
     const formData = new FormData(e.currentTarget);
-    const accessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY?.trim() || "";
-    formData.append("access_key", accessKey);
+    formData.append("access_key", WEB3FORMS_ACCESS_KEY);
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
