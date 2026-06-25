@@ -1,11 +1,14 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "cleanUrls": true,
-  "rewrites": [
+  "redirects": [
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/studio/:path*",
+      "destination": "/#/studio/:path*",
+      "permanent": false
+    },
+    {
+      "source": "/studio",
+      "destination": "/#/studio",
+      "permanent": false
     }
   ]
 }

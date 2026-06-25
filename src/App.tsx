@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import CabinCollection from "./pages/CabinCollection";
@@ -18,7 +18,7 @@ const App: React.FC = () => {
   return (
     <>
       {loading && <Preloader onFinish={() => setLoading(false)} />}
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
@@ -31,7 +31,7 @@ const App: React.FC = () => {
           </Route>
           <Route path="/studio/*" element={<StudioPage />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 };
