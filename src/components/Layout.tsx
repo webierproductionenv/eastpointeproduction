@@ -394,10 +394,21 @@ const Layout: React.FC = () => {
             </div>
           </div>
 
-          <div className="border-t border-white/10 mt-20 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-stone-500">
-            <p>
-              &copy; {new Date().getFullYear()} {siteSettings?.copyrightText || "East Pointe Collections. All rights reserved."}
-            </p>
+          <div className="border-t border-white/10 mt-20 pt-8 flex flex-col md:flex-row justify-between items-start text-sm text-stone-500">
+            <div>
+              <p>
+                &copy; {new Date().getFullYear()} {siteSettings?.copyrightText || "East Pointe Collections. All rights reserved."}
+              </p>
+              <NavLink
+                to="/studio"
+                className="text-[10px] tracking-widest uppercase transition-colors duration-300 mt-2 inline-block"
+                style={{ color: '#3d2e28' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#3d2e28')}
+              >
+                cms
+              </NavLink>
+            </div>
           </div>
         </div>
       </footer>
