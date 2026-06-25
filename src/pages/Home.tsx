@@ -136,6 +136,60 @@ const Home: React.FC = () => {
   const ctaData = pageData?.ctaSection;
   const seoData = pageData?.seo;
 
+  const displayCarousel = cms_carousel && cms_carousel.length > 0 ? cms_carousel.map((item: any, idx: number) => ({
+    id: idx + 1,
+    title: item.title,
+    desc: item.description,
+    link: item.linkUrl,
+    img: getImageUrl(item.image),
+    icon: getIcon(item.icon) || Star,
+  })) : CAROUSEL_ITEMS;
+
+  const displayExperiences = experiences?.items && experiences.items.length > 0 ? experiences.items.map((item: any) => ({
+    category: item.category,
+    title: item.title,
+    description: item.description,
+    image: getImageUrl(item.image),
+    icon: getIcon(item.icon) || Fish,
+  })) : [
+    {
+      category: "Adventure",
+      title: "Anglers Haven",
+      description: "A quiet cove just a short walk from the house.",
+      image: "/Home/Hiking.avif",
+      icon: Fish,
+    },
+    {
+      category: "Relaxation",
+      title: "Lake Activities",
+      description: "Swimming, kayaking, or simply enjoying family fun by the water.",
+      image: "/Membership/MembershipHero.avif",
+      icon: Anchor,
+    },
+    {
+      category: "Tranquility",
+      title: "Rest & Relaxation",
+      description: "Peaceful moments fishing by the lake or reading on the dock.",
+      image: "/Home/Relax.avif",
+      icon: Fish,
+    }
+  ];
+
+  const defaultDistances = [
+    { time: "35 Mins", destination: "Downtown Kansas City", icon: Car },
+    { time: "2.5 Hours", destination: "St. Louis", icon: Car },
+    { time: "40 Mins", destination: "MCI Airport", icon: Plane },
+    { time: "32 Mins", destination: "Truman Sports Complex", icon: Car },
+    { time: "25 Mins", destination: "Warrensburg", icon: Car },
+    { time: "15 Mins", destination: "Powell Gardens", icon: Car },
+  ];
+
+  const displayDistances = locationData?.distances && locationData.distances.length > 0 ? locationData.distances.map((d: any) => ({
+    time: d.time,
+    destination: d.destination,
+    icon: getIcon(d.icon) || Car
+  })) : defaultDistances;
+
   // Initialize scroll position to the middle set on load
   useEffect(() => {
     if (sliderRef.current) {
@@ -320,7 +374,7 @@ const Home: React.FC = () => {
               {/* Render items 3 times for robust infinite scroll (Start, Middle, End sets) */}
               {[...Array(3)].map((_, groupIndex) => (
                 <div key={groupIndex} className="flex shrink-0 items-stretch">
-                  {CAROUSEL_ITEMS.map((item, index) => (
+                  {displayCarousel.map((item: any, index: number) => (
                     <div
                       key={`${groupIndex}-${index}`}
                       className="w-[85vw] md:w-[30vw] flex-shrink-0 px-4"
@@ -415,84 +469,36 @@ const Home: React.FC = () => {
         </FadeIn>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <FadeIn delay={0}>
-            <div className="relative group overflow-hidden h-[500px] cursor-pointer">
-              <img
-                src="/Home/Hiking.avif"
-                alt="Anglers Haven"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-10 opacity-90 group-hover:opacity-100 transition-opacity">
-                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  <div className="flex items-center gap-2 text-secondary mb-3">
-                    <Fish size={18} />
-                    <span className="text-xs font-bold uppercase tracking-widest">
-                      Adventure
-                    </span>
+          {displayExperiences.map((exp: any, idx: number) => {
+            const Icon = exp.icon;
+            return (
+              <FadeIn delay={idx * 150} key={idx}>
+                <div className="relative group overflow-hidden h-[500px] cursor-pointer">
+                  <img
+                    src={exp.image}
+                    alt={exp.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-10 opacity-90 group-hover:opacity-100 transition-opacity">
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      <div className="flex items-center gap-2 text-secondary mb-3">
+                        <Icon size={18} />
+                        <span className="text-xs font-bold uppercase tracking-widest">
+                          {exp.category}
+                        </span>
+                      </div>
+                      <h3 className="text-3xl font-serif text-white mb-2">
+                        {exp.title}
+                      </h3>
+                      <p className="text-stone-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                        {exp.description}
+                      </p>
+                    </div>
                   </div>
-                  <h3 className="text-3xl font-serif text-white mb-2">
-                    Anglers Haven
-                  </h3>
-                  <p className="text-stone-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                    A quiet cove just a short walk from the house.
-                  </p>
                 </div>
-              </div>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={150}>
-            <div className="relative group overflow-hidden h-[500px] cursor-pointer">
-              <img
-                src="/Membership/MembershipHero.avif"
-                alt="Lake"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-10 opacity-90 group-hover:opacity-100 transition-opacity">
-                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  <div className="flex items-center gap-2 text-secondary mb-3">
-                    <Anchor size={18} />
-                    <span className="text-xs font-bold uppercase tracking-widest">
-                      Relaxation
-                    </span>
-                  </div>
-                  <h3 className="text-3xl font-serif text-white mb-2">
-                    Lake Activities
-                  </h3>
-                  <p className="text-stone-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                    Swimming, kayaking, or simply enjoying family fun by the
-                    water.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </FadeIn>
-
-          <FadeIn delay={300}>
-            <div className="relative group overflow-hidden h-[500px] cursor-pointer">
-              <img
-                src="/Home/Relax.avif"
-                alt="Fishing"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-10 opacity-90 group-hover:opacity-100 transition-opacity">
-                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  <div className="flex items-center gap-2 text-secondary mb-3">
-                    <Fish size={18} />
-                    <span className="text-xs font-bold uppercase tracking-widest">
-                      Tranquility
-                    </span>
-                  </div>
-                  <h3 className="text-3xl font-serif text-white mb-2">
-                    Rest & Relaxation
-                  </h3>
-                  <p className="text-stone-300 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                    Peaceful moments fishing by the lake or reading on the dock.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </FadeIn>
+              </FadeIn>
+            );
+          })}
         </div>
 
         <div className="text-center mt-16">
@@ -599,18 +605,18 @@ const Home: React.FC = () => {
                 <div className="flex items-center gap-2 text-accent mb-6">
                   <MapPin size={20} />
                   <span className="text-xs font-bold uppercase tracking-widest">
-                    The Location
+                    {locationData?.label || "The Location"}
                   </span>
                 </div>
                 <h2 className="text-4xl lg:text-5xl font-serif mb-8 leading-tight">
-                  Nestled in Nature
+                  {locationData?.title || "Nestled in Nature"}
                 </h2>
                 <div className="mb-10 p-6 bg-white/5 border border-white/10 rounded-sm">
                   <p className="text-xl font-serif text-white tracking-wide">
-                    Lake Lafayette
+                    {locationData?.locationName || "Lake Lafayette"}
                   </p>
                   <p className="text-lg text-accent mb-4">
-                    Odessa, Missouri 64076
+                    {locationData?.locationAddress || "Odessa, Missouri 64076"}
                   </p>
                   <a
                     href="https://www.google.com/maps/dir/?api=1&destination=38.9458417,-93.9713331"
@@ -622,90 +628,28 @@ const Home: React.FC = () => {
                   </a>
                 </div>
                 <p className="text-stone-400 text-lg leading-relaxed mb-10 font-light">
-                  East Pointe is strategically located in the heart of
-                  Missouri's beautiful countryside. A perfect escape that feels
-                  worlds away, yet conveniently close to major hubs.
+                  {locationData?.body || "East Pointe is strategically located in the heart of Missouri's beautiful countryside. A perfect escape that feels worlds away, yet conveniently close to major hubs."}
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8">
-                  <div className="flex items-center gap-4 group">
-                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-accent shrink-0 group-hover:bg-accent group-hover:text-primary transition-colors duration-300">
-                      <Car size={20} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-base text-white mb-0.5">
-                        35 Mins
-                      </h4>
-                      <p className="text-stone-500 text-xs uppercase tracking-wide">
-                        Downtown Kansas City
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4 group">
-                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-accent shrink-0 group-hover:bg-accent group-hover:text-primary transition-colors duration-300">
-                      <Car size={20} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-base text-white mb-0.5">
-                        2.5 Hours
-                      </h4>
-                      <p className="text-stone-500 text-xs uppercase tracking-wide">
-                        St. Louis
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4 group">
-                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-accent shrink-0 group-hover:bg-accent group-hover:text-primary transition-colors duration-300">
-                      <Plane size={20} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-base text-white mb-0.5">
-                        40 Mins
-                      </h4>
-                      <p className="text-stone-500 text-xs uppercase tracking-wide">
-                        MCI Airport
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4 group">
-                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-accent shrink-0 group-hover:bg-accent group-hover:text-primary transition-colors duration-300">
-                      <Car size={20} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-base text-white mb-0.5">
-                        32 Mins
-                      </h4>
-                      <p className="text-stone-500 text-xs uppercase tracking-wide">
-                        Truman Sports Complex
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4 group">
-                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-accent shrink-0 group-hover:bg-accent group-hover:text-primary transition-colors duration-300">
-                      <Car size={20} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-base text-white mb-0.5">
-                        25 Mins
-                      </h4>
-                      <p className="text-stone-500 text-xs uppercase tracking-wide">
-                        Warrensburg
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4 group">
-                    <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-accent shrink-0 group-hover:bg-accent group-hover:text-primary transition-colors duration-300">
-                      <Car size={20} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-base text-white mb-0.5">
-                        15 Mins
-                      </h4>
-                      <p className="text-stone-500 text-xs uppercase tracking-wide">
-                        Powell Gardens
-                      </p>
-                    </div>
-                  </div>
+                  {displayDistances.map((dist: any, idx: number) => {
+                    const Icon = dist.icon;
+                    return (
+                      <div key={idx} className="flex items-center gap-4 group">
+                        <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-accent shrink-0 group-hover:bg-accent group-hover:text-primary transition-colors duration-300">
+                          <Icon size={20} />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-base text-white mb-0.5">
+                            {dist.time}
+                          </h4>
+                          <p className="text-stone-500 text-xs uppercase tracking-wide">
+                            {dist.destination}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </FadeIn>
             </div>

@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import SEO from "../components/SEO";
 import { useSanity } from "../hooks/useSanity";
-import { AMENITIES_PAGE_QUERY, AMENITIES_QUERY } from "../lib/queries";
+import { AMENITIES_PAGE_QUERY, AMENITIES_QUERY, CABIN_PAGE_QUERY, SITE_SETTINGS_QUERY } from "../lib/queries";
 import { getImageUrl } from "../lib/sanity";
 import { getIcon } from "../lib/iconMap";
 
@@ -93,10 +93,13 @@ const amenities = [
 const ComfortConvenience: React.FC = () => {
   const { data: pageData } = useSanity<any>(AMENITIES_PAGE_QUERY);
   const { data: cmsAmenities } = useSanity<any[]>(AMENITIES_QUERY);
+  const { data: cabinPage } = useSanity<any>(CABIN_PAGE_QUERY);
+  const { data: siteSettings } = useSanity<any>(SITE_SETTINGS_QUERY);
 
   const hero = pageData?.hero;
   const intro = pageData?.intro;
   const seoData = pageData?.seo;
+  const comeSeeUs = cabinPage?.comeSeeUs;
 
   const displayAmenities = cmsAmenities && cmsAmenities.length > 0 ? cmsAmenities.map(item => ({
     icon: getIcon(item.icon),
@@ -172,14 +175,13 @@ const ComfortConvenience: React.FC = () => {
                 <MapPin className="text-accent" size={24} />
               </div>
               <h2 className="text-4xl md:text-5xl font-serif mb-6 leading-tight">
-                Come See Us
+                {comeSeeUs?.title || "Come See Us"}
               </h2>
               <p className="text-xl text-stone-300 mb-8 font-light">
-                Visit our offices to explore our stunning lakeside cabins!
+                {comeSeeUs?.subtitle || "Visit our offices to explore our stunning lakeside cabins!"}
               </p>
               <p className="text-stone-400 leading-relaxed mb-10 max-w-lg">
-                Experience the serene surroundings firsthand and discover your
-                perfect getaway. We look forward to welcoming you!
+                {comeSeeUs?.body || "Experience the serene surroundings firsthand and discover your perfect getaway. We look forward to welcoming you!"}
               </p>
 
               <div className="flex flex-col gap-6">
@@ -190,10 +192,10 @@ const ComfortConvenience: React.FC = () => {
                   <div>
                     <h4 className="font-bold text-white">Location</h4>
                     <p className="text-stone-400">
-                      Lake Lafayette, Odessa, MO 64076
+                      {siteSettings?.address || "Lake Lafayette, Odessa, MO 64076"}
                     </p>
                     <a
-                      href="https://www.google.com/maps/dir/?api=1&destination=38.9458417,-93.9713331"
+                      href={siteSettings?.googleMapsUrl || "https://www.google.com/maps/dir/?api=1&destination=38.9458417,-93.9713331"}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent hover:text-white transition-colors mt-1"
@@ -208,7 +210,7 @@ const ComfortConvenience: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-bold text-white">Hours</h4>
-                    <p className="text-stone-400">We are open year round!</p>
+                    <p className="text-stone-400">{siteSettings?.officeHours || "We are open year round!"}</p>
                   </div>
                 </div>
               </div>
@@ -217,7 +219,7 @@ const ComfortConvenience: React.FC = () => {
             {/* Right Map/Image */}
             <div className="lg:w-1/2 w-full h-[500px] bg-stone-800 rounded-lg overflow-hidden border border-white/10 shadow-2xl relative group">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12435.5!2d-93.9713331!3d38.9458417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87c169965ad4a83d%3A0x1b1bb606912fe188!2sLake%20Lafayette!5e0!3m2!1sen!2sus!4v1709900000000!5m2!1sen!2sus"
+                src={siteSettings?.googleMapsEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12435.5!2d-93.9713331!3d38.9458417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87c169965ad4a83d%3A0x1b1bb606912fe188!2sLake%20Lafayette!5e0!3m2!1sen!2sus!4v1709900000000!5m2!1sen!2sus"}
                 width="100%"
                 height="100%"
                 style={{

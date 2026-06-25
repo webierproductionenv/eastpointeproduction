@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { Mail, User, Mountain, ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
 import { WEB3FORMS_ACCESS_KEY } from "../lib/env";
+import { useSanity } from "../hooks/useSanity";
+import { SITE_SETTINGS_QUERY } from "../lib/queries";
 
 const ContactSection: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const { data: siteSettings } = useSanity<any>(SITE_SETTINGS_QUERY);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,11 +59,11 @@ const ContactSection: React.FC = () => {
           <div className="hidden lg:flex flex-col gap-6 border-l-2 border-accent/40 pl-8">
             <div>
               <h4 className="text-primary font-bold uppercase tracking-widest text-xs mb-1">Direct Contact</h4>
-              <p className="text-stone-500 text-sm">nick@eastpointekc.com</p>
+              <p className="text-stone-500 text-sm">{siteSettings?.email || "nick@eastpointekc.com"}</p>
             </div>
             <div>
               <h4 className="text-primary font-bold uppercase tracking-widest text-xs mb-1">Location</h4>
-              <p className="text-stone-500 text-sm">East Pointe Collections, Kansas City</p>
+              <p className="text-stone-500 text-sm">{siteSettings?.siteName || "East Pointe Collections"}, {siteSettings?.address || "Kansas City"}</p>
             </div>
           </div>
         </div>

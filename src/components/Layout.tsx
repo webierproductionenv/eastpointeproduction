@@ -12,11 +12,14 @@ import {
   ArrowRight,
   Twitter,
 } from "lucide-react";
+import { useSanity } from "../hooks/useSanity";
+import { SITE_SETTINGS_QUERY } from "../lib/queries";
 
 const Layout: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+  const { data: siteSettings } = useSanity<any>(SITE_SETTINGS_QUERY);
 
   const toggleMenu = () => {
     if (isMenuOpen) {
@@ -251,10 +254,10 @@ const Layout: React.FC = () => {
                   Contact Us
                 </h4>
                 <p className="text-stone-300 text-lg font-light">
-                  +1 (816) 255-8683
+                  {siteSettings?.phone || "+1 (816) 255-8683"}
                 </p>
                 <p className="text-stone-300 text-lg font-light">
-                  nick@eastpointekc.com
+                  {siteSettings?.email || "nick@eastpointekc.com"}
                 </p>
               </div>
 
@@ -264,15 +267,15 @@ const Layout: React.FC = () => {
                 </h4>
                 <div className="flex space-x-6 text-white">
                   <a
-                    href="https://www.instagram.com/eastpointekc/"
+                    href={siteSettings?.socialLinks?.find((s: any) => s.platform === "Instagram")?.url || "https://www.instagram.com/eastpointekc/"}
                     className="hover:text-accent transition-colors"
                   >
                     <Instagram size={24} />
                   </a>
-                  <a href="#" className="hover:text-accent transition-colors">
+                  <a href={siteSettings?.socialLinks?.find((s: any) => s.platform === "Facebook")?.url || "#"} className="hover:text-accent transition-colors">
                     <Facebook size={24} />
                   </a>
-                  <a href="#" className="hover:text-accent transition-colors">
+                  <a href={siteSettings?.socialLinks?.find((s: any) => s.platform === "Twitter")?.url || "#"} className="hover:text-accent transition-colors">
                     <Twitter size={24} />
                   </a>
                 </div>
@@ -320,8 +323,7 @@ const Layout: React.FC = () => {
                 </div>
               </div>
               <p className="max-w-md text-stone-300 leading-relaxed mb-8 text-lg font-light">
-                Redefining the cabin experience. Where luxury meets wilderness,
-                and guests become family. Experience nature without compromise.
+                {siteSettings?.footerDescription || "Redefining the cabin experience. Where luxury meets wilderness, and guests become family. Experience nature without compromise."}
               </p>
             </div>
 
@@ -359,7 +361,7 @@ const Layout: React.FC = () => {
                       Email us for any questions or booking
                     </span>
                     <span className="group-hover:text-white transition-colors">
-                      nick@eastpointekc.com
+                      {siteSettings?.email || "nick@eastpointekc.com"}
                     </span>
                   </div>
                 </li>
@@ -369,19 +371,19 @@ const Layout: React.FC = () => {
                   </div>
                   <div className="flex gap-4">
                     <a
-                      href="https://www.instagram.com/eastpointekc/"
+                      href={siteSettings?.socialLinks?.find((s: any) => s.platform === "Instagram")?.url || "https://www.instagram.com/eastpointekc/"}
                       className="p-3 bg-white/5 rounded-full hover:bg-accent hover:text-primary transition-all duration-300"
                     >
                       <Instagram size={20} />
                     </a>
                     <a
-                      href="#"
+                      href={siteSettings?.socialLinks?.find((s: any) => s.platform === "Facebook")?.url || "#"}
                       className="p-3 bg-white/5 rounded-full hover:bg-accent hover:text-primary transition-all duration-300"
                     >
                       <Facebook size={20} />
                     </a>
                     <a
-                      href="#"
+                      href={siteSettings?.socialLinks?.find((s: any) => s.platform === "Twitter")?.url || "#"}
                       className="p-3 bg-white/5 rounded-full hover:bg-accent hover:text-primary transition-all duration-300"
                     >
                       <Twitter size={20} />
@@ -394,8 +396,7 @@ const Layout: React.FC = () => {
 
           <div className="border-t border-white/10 mt-20 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-stone-500">
             <p>
-              &copy; {new Date().getFullYear()} East Pointe Collections. All
-              rights reserved.
+              &copy; {new Date().getFullYear()} {siteSettings?.copyrightText || "East Pointe Collections. All rights reserved."}
             </p>
           </div>
         </div>

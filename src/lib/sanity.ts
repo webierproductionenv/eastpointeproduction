@@ -32,7 +32,8 @@ export function getImageUrl(source: any, fallback: string = ''): string {
   }
   try {
     const url = urlFor(source);
-    return url ? url.auto('format').url() : fallback;
+    // .auto('format') handles webp, .fit('max') avoids upscaling, .quality(80) saves bandwidth
+    return url ? url.auto('format').fit('max').quality(80).url() : fallback;
   } catch {
     return fallback;
   }

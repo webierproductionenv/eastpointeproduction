@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { sanityClient } from '../lib/sanity';
 
+// Global cache to prevent duplicate network requests across different components.
+const queryCache = new Map<string, Promise<any>>();
+
 interface UseSanityResult<T> {
   data: T | null;
   loading: boolean;
@@ -27,9 +30,21 @@ export function useSanity<T = any>(
     let cancelled = false;
 
     const fetchData = async () => {
+      const cacheKey = `${query}-${JSON.stringify(params || {})}`;
+
       try {
         setLoading(true);
-        const result = await sanityClient.fetch<T>(query, params || {});
+
+        // Check if there is an ongoing or resolved promise for this exact query
+        if (!queryCache.has(cacheKey)) {
+          // If not, create a new promise and store it in the cache immediately
+          const promise = sanityClient.fetch<T>(query, params || {});
+          queryCache.set(cacheKey, promise);
+        }
+
+        // Await the promise (either freshly created or from the cache)
+        const result = await queryCache.get(cacheKey);
+
         if (!cancelled) {
           setData(result);
           setError(null);
@@ -38,8 +53,9 @@ export function useSanity<T = any>(
         if (!cancelled) {
           console.warn('[Sanity] Failed to fetch data, using fallback content:', err);
           setError(err instanceof Error ? err : new Error('Failed to fetch from Sanity'));
-          // Don't clear data — keep whatever was previously loaded
         }
+        // Optional: Remove failed promise from cache so it retries next time
+        queryCache.delete(cacheKey);
       } finally {
         if (!cancelled) {
           setLoading(false);
@@ -77,7 +93,14 @@ export function useSanityMultiple(queries: string[]): {
       try {
         setLoading(true);
         const results = await Promise.all(
-          queries.map((q) => sanityClient.fetch(q).catch(() => null))
+          queries.map((q) => {
+            const cacheKey = `${q}-{}`;
+            if (!queryCache.has(cacheKey)) {
+              const promise = sanityClient.fetch(q).catch(() => null);
+              queryCache.set(cacheKey, promise);
+            }
+            return queryCache.get(cacheKey);
+          })
         );
         if (!cancelled) {
           setData(results);

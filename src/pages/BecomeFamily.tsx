@@ -4,7 +4,7 @@ import { Check, Mail, Phone } from "lucide-react";
 import SEO from "../components/SEO";
 import ContactSection from "../components/ContactSection";
 import { useSanity } from "../hooks/useSanity";
-import { MEMBERSHIP_PAGE_QUERY } from "../lib/queries";
+import { MEMBERSHIP_PAGE_QUERY, SITE_SETTINGS_QUERY } from "../lib/queries";
 import { getImageUrl } from "../lib/sanity";
 
 const defaultBenefits = [
@@ -31,6 +31,7 @@ const defaultSteps = [
 
 const BecomeFamily: React.FC = () => {
   const { data: pageData } = useSanity<any>(MEMBERSHIP_PAGE_QUERY);
+  const { data: siteSettings } = useSanity<any>(SITE_SETTINGS_QUERY);
 
   const hero = pageData?.hero;
   const leftPanel = pageData?.leftPanel;
@@ -118,16 +119,16 @@ const BecomeFamily: React.FC = () => {
 
               <div className="mt-10 space-y-4">
                 <a
-                  href="mailto:nick@eastpointekc.com?subject=Membership Inquiry"
+                  href={`mailto:${siteSettings?.email || "nick@eastpointekc.com"}?subject=Membership Inquiry`}
                   className="block w-full bg-primary text-white font-bold py-4 px-6 rounded-sm hover:bg-secondary transition-all duration-300 shadow-lg hover:shadow-xl text-center flex items-center justify-center gap-3"
                 >
                   <Mail size={18} /> Email Membership Team
                 </a>
                 <a
-                  href="tel:+18162558683"
+                  href={siteSettings?.phoneLink || "tel:+18162558683"}
                   className="block w-full border border-primary text-primary font-bold py-4 px-6 rounded-sm hover:bg-stone-50 transition-all duration-300 text-center flex items-center justify-center gap-3"
                 >
-                  <Phone size={18} /> Call (816) 255-8683
+                  <Phone size={18} /> Call {siteSettings?.phone || "(816) 255-8683"}
                 </a>
               </div>
             </div>

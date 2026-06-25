@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import SEO from "../components/SEO";
 import { useSanity } from "../hooks/useSanity";
-import { COMMUNITY_PAGE_QUERY } from "../lib/queries";
+import { COMMUNITY_PAGE_QUERY, SITE_SETTINGS_QUERY, CABIN_PAGE_QUERY } from "../lib/queries";
 import { getImageUrl } from "../lib/sanity";
 import { getIcon } from "../lib/iconMap";
 
@@ -43,12 +43,15 @@ const defaultEventCards = [
 
 const GatherConnect: React.FC = () => {
   const { data: pageData } = useSanity<any>(COMMUNITY_PAGE_QUERY);
+  const { data: siteSettings } = useSanity<any>(SITE_SETTINGS_QUERY);
+  const { data: cabinPage } = useSanity<any>(CABIN_PAGE_QUERY);
 
   const hero = pageData?.hero;
   const intro = pageData?.intro;
   const seoData = pageData?.seo;
   const eventCards = pageData?.eventCards;
   const concierge = pageData?.concierge;
+  const comeSeeUs = cabinPage?.comeSeeUs;
 
   const displayEventCards = eventCards && eventCards.length > 0 ? eventCards.map((card: any) => ({
     ...card,
@@ -170,7 +173,7 @@ const GatherConnect: React.FC = () => {
 
             <div className="space-y-6">
               <a
-                href="mailto:nick@eastpointekc.com"
+                href={`mailto:${siteSettings?.email || "nick@eastpointekc.com"}`}
                 className="group block bg-white hover:bg-accent transition-colors p-6 rounded-sm text-center shadow-lg"
               >
                 <Mail
@@ -181,12 +184,12 @@ const GatherConnect: React.FC = () => {
                   Email Us
                 </span>
                 <span className="block text-xl font-bold text-primary">
-                  nick@eastpointekc.com
+                  {siteSettings?.email || "nick@eastpointekc.com"}
                 </span>
               </a>
 
               <a
-                href="tel:+18162558683"
+                href={siteSettings?.phoneLink || "tel:+18162558683"}
                 className="group block bg-primary border border-white/20 hover:border-accent hover:bg-white/5 transition-all p-6 rounded-sm text-center"
               >
                 <Phone
@@ -197,13 +200,13 @@ const GatherConnect: React.FC = () => {
                   Call Us
                 </span>
                 <span className="block text-xl font-bold text-white">
-                  (816) 255-8683
+                  {siteSettings?.phone || "(816) 255-8683"}
                 </span>
               </a>
             </div>
 
             <p className="text-center text-stone-500 text-sm mt-8 italic">
-              {concierge?.officeHours || "Office Hours: Mon-Fri, 9am - 5pm CST"}
+              {siteSettings?.officeHours || concierge?.officeHours || "Office Hours: Mon-Fri, 9am - 5pm CST"}
             </p>
           </div>
         </div>
@@ -219,14 +222,13 @@ const GatherConnect: React.FC = () => {
                 <MapPin className="text-accent" size={24} />
               </div>
               <h2 className="text-4xl md:text-5xl font-serif mb-6 leading-tight">
-                Come See Us
+                {comeSeeUs?.title || "Come See Us"}
               </h2>
               <p className="text-xl text-stone-300 mb-8 font-light">
-                Visit our offices to tour the grounds before your event!
+                {comeSeeUs?.subtitle || "Visit our offices to tour the grounds before your event!"}
               </p>
               <p className="text-stone-400 leading-relaxed mb-10 max-w-lg">
-                We'd love to walk you through the cabins and event spaces to
-                help you visualize your gathering.
+                {comeSeeUs?.body || "We'd love to walk you through the cabins and event spaces to help you visualize your gathering."}
               </p>
 
               <div className="flex flex-col gap-6">
@@ -237,10 +239,10 @@ const GatherConnect: React.FC = () => {
                   <div>
                     <h4 className="font-bold text-white">Location</h4>
                     <p className="text-stone-400">
-                      Lake Lafayette, Odessa, MO 64076
+                      {siteSettings?.address || "Lake Lafayette, Odessa, MO 64076"}
                     </p>
                     <a
-                      href="https://www.google.com/maps/dir/?api=1&destination=38.9458417,-93.9713331"
+                      href={siteSettings?.googleMapsUrl || "https://www.google.com/maps/dir/?api=1&destination=38.9458417,-93.9713331"}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-accent hover:text-white transition-colors mt-1"
@@ -255,7 +257,7 @@ const GatherConnect: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-bold text-white">Hours</h4>
-                    <p className="text-stone-400">We are open year round!</p>
+                    <p className="text-stone-400">{siteSettings?.officeHours || "We are open year round!"}</p>
                   </div>
                 </div>
               </div>
@@ -264,7 +266,7 @@ const GatherConnect: React.FC = () => {
             {/* Right Map/Image */}
             <div className="lg:w-1/2 w-full h-[500px] bg-stone-800 rounded-lg overflow-hidden border border-white/10 shadow-2xl relative group">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12435.5!2d-93.9713331!3d38.9458417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87c169965ad4a83d%3A0x1b1bb606912fe188!2sLake%20Lafayette!5e0!3m2!1sen!2sus!4v1709900000000!5m2!1sen!2sus"
+                src={siteSettings?.googleMapsEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12435.5!2d-93.9713331!3d38.9458417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87c169965ad4a83d%3A0x1b1bb606912fe188!2sLake%20Lafayette!5e0!3m2!1sen!2sus!4v1709900000000!5m2!1sen!2sus"}
                 width="100%"
                 height="100%"
                 style={{
