@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useSanity } from "../hooks/useSanity";
 import { SITE_SETTINGS_QUERY } from "../lib/queries";
+import Chatbot from "./Chatbot";
 
 const Layout: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -101,6 +102,7 @@ const Layout: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-cream text-stone-900 font-sans selection:bg-accent selection:text-primary">
+      <Chatbot />
       {/* --- Navigation Bar --- */}
       <header
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${navBackground} ${navPadding}`}

@@ -291,6 +291,7 @@ const Home: React.FC = () => {
           src={getImageUrl(hero?.image, "/Home/LandingImage.avif")}
           alt="East Pointe Luxury Cabins"
           className="absolute inset-0 w-full h-full object-cover animate-scale-in"
+          fetchPriority="high"
         />
 
         <div className="absolute inset-0 bg-black/30"></div>
@@ -390,6 +391,7 @@ const Home: React.FC = () => {
                             alt={item.title}
                             className="w-full h-full object-cover transition-transform duration-700 group-hover/card:scale-110"
                             draggable="false"
+                            loading="lazy"
                           />
                           <div className="absolute inset-0 bg-primary/10 group-hover/card:bg-transparent transition-colors"></div>
                         </div>
@@ -426,6 +428,7 @@ const Home: React.FC = () => {
               src={getImageUrl(immersive?.mapImage, "/Map.avif")}
               alt="Property Map"
               className="w-full h-auto block"
+              loading="lazy"
             />
           </div>
 
@@ -478,6 +481,7 @@ const Home: React.FC = () => {
                     src={exp.image}
                     alt={exp.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-10 opacity-90 group-hover:opacity-100 transition-opacity">
                     <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
