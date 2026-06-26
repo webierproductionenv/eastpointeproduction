@@ -106,16 +106,21 @@ export default defineType({
       title: 'Gallery Showcase Images',
       type: 'array',
       group: 'media',
-      description: 'Upload high-quality visual photos of this cabin. You can rearrange them by dragging.',
+      description: 'Upload high-quality visual photos of this cabin. You can rearrange them by dragging. Click "Add item" to upload more images.',
       of: [
         {
           type: 'image',
           options: { hotspot: true },
+          fields: [
+            {
+              name: 'alt',
+              type: 'string',
+              title: 'Alternative Text',
+              description: 'Brief description of the image for accessibility and SEO.'
+            }
+          ]
         },
       ],
-      options: {
-        layout: 'grid',
-      },
     }),
     defineField({
       name: 'features',

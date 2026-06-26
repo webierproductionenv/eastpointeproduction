@@ -28,18 +28,23 @@ export default defineType({
     defineField({
       name: 'eventCards',
       title: 'Event Type Cards',
+      description: 'Add or remove event cards here. Each card will be displayed on the Community page.',
       type: 'array',
-      of: [{
-        type: 'object',
-        fields: [
-          { name: 'title', title: 'Title', type: 'string' },
-          { name: 'description', title: 'Description', type: 'text' },
-          { name: 'image', title: 'Image', type: 'image', options: { hotspot: true } },
-          { name: 'icon', title: 'Icon', type: 'string', options: { list: [{ title: 'Heart', value: 'Heart' }, { title: 'Users', value: 'Users' }, { title: 'Briefcase', value: 'Briefcase' }] } },
-          { name: 'features', title: 'Features List', type: 'array', of: [{ type: 'string' }] },
-        ],
-        preview: { select: { title: 'title', media: 'image' } },
-      }],
+      of: [
+        {
+          name: 'eventCard',
+          title: 'Event Card',
+          type: 'object',
+          fields: [
+            { name: 'title', title: 'Title', type: 'string' },
+            { name: 'description', title: 'Description', type: 'text' },
+            { name: 'image', title: 'Card Image', type: 'image', description: 'Upload an image for this card.', options: { hotspot: true } },
+            { name: 'icon', title: 'Icon', type: 'string', options: { list: [{ title: 'Heart', value: 'Heart' }, { title: 'Users', value: 'Users' }, { title: 'Briefcase', value: 'Briefcase' }] } },
+            { name: 'features', title: 'Features List', type: 'array', of: [{ type: 'string' }] },
+          ],
+          preview: { select: { title: 'title', media: 'image' } },
+        }
+      ],
     }),
     defineField({
       name: 'concierge',
