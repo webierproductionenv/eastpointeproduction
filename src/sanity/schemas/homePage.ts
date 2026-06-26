@@ -46,7 +46,7 @@ export default defineType({
         { name: 'label', title: 'Section Label', type: 'string', initialValue: 'Our Philosophy' },
         { name: 'title', title: 'Section Title', type: 'string', initialValue: 'Discover the perfect lake escape' },
         { name: 'highlightedText', title: 'Highlighted / Italic Text', type: 'string', initialValue: 'perfect lake escape', description: 'Specify which words in the title should be styled as italic/gold accent.' },
-        { name: 'body', title: 'Body Text Description', type: 'text', description: 'Write a compelling paragraph detailing what makes East Pointe special.' },
+        { name: 'body', title: 'Body Text Description', type: 'text', initialValue: "Welcome to EastPointe At EastPointe, the land, the environment, and our faith in GOD mean everything to us. Our cabins are intentionally built using reclaimed and recycled wood and materials. This rustic style is by design. We believe there is beauty in imperfection. While you're here, take time to slow down. Walk the roads, visit the lake, and enjoy the peaceful surroundings. Most of all, we hope your time here brings you peace, rest, and a chance to reconnect with what matters most. Thank you for being part of the EastPointe story.", description: 'Write a compelling paragraph detailing what makes East Pointe special.' },
         { name: 'linkText', title: 'Button Label', type: 'string', initialValue: 'Explore Our Philosophy' },
         { name: 'linkUrl', title: 'Button Redirection Link', type: 'string', initialValue: '/cabins', description: 'Use relative paths (e.g. /cabins) or absolute URLs.' },
       ],
@@ -59,6 +59,12 @@ export default defineType({
       type: 'array',
       group: 'about',
       description: 'Cards that users can swipe / slide through in the philosophy section.',
+      initialValue: [
+        { _key: 'c1', title: 'The Collection', description: 'Discover our hand-picked portfolio of luxury cabins, each offering unique architecture and premium amenities.', linkUrl: '/cabins', icon: 'Star' },
+        { _key: 'c2', title: 'Comfort & Ease', description: "From chef's kitchens to high-speed wifi, we've curated every detail to make your stay effortless.", linkUrl: '/comfort', icon: 'Wind' },
+        { _key: 'c3', title: 'Gather Together', description: 'Spaces designed for connection. Large dining tables, fire pits, and game rooms for making memories.', linkUrl: '/gather', icon: 'Users' },
+        { _key: 'c4', title: 'Explore Nature', description: 'Hiking trails, alpine lakes, and hidden waterfalls await just minutes from your doorstep.', linkUrl: '/beyond', icon: 'Mountain' }
+      ],
       of: [
         {
           type: 'object',
@@ -104,7 +110,7 @@ export default defineType({
         { name: 'mapImage', title: 'Visual Property Map Image', type: 'image', options: { hotspot: true } },
         { name: 'label', title: 'Section Label', type: 'string', initialValue: 'The Surroundings' },
         { name: 'title', title: 'Section Title', type: 'string', initialValue: 'Beyond the Cabin' },
-        { name: 'body', title: 'Section Body Description Text', type: 'text' },
+        { name: 'body', title: 'Section Body Description Text', type: 'text', initialValue: 'Step outside and immerse yourself in the breathtaking landscapes that surround our properties. Hiking trails, alpine lakes, and hidden waterfalls await just minutes from your doorstep.' },
         { name: 'linkText', title: 'Button Label', type: 'string', initialValue: 'Discover the Area' },
         { name: 'linkUrl', title: 'Button Redirection Link', type: 'string', initialValue: '/beyond' },
       ],
@@ -119,11 +125,16 @@ export default defineType({
       description: 'Highlight beautiful local activities (fishing, boating, hiking, etc.).',
       fields: [
         { name: 'title', title: 'Section Title', type: 'string', initialValue: 'Curated Experiences' },
-        { name: 'subtitle', title: 'Section Subtitle / Intro Description', type: 'text' },
+        { name: 'subtitle', title: 'Section Subtitle / Intro Description', type: 'text', initialValue: 'Whether you seek adrenaline-pumping adventure or serene nature walks, our location offers endless opportunities to explore.' },
         {
           name: 'items',
           title: 'Experience Cards',
           type: 'array',
+          initialValue: [
+            { _key: 'e1', category: 'Adventure', title: 'Anglers Haven', description: 'A quiet cove just a short walk from the house.', icon: 'Fish' },
+            { _key: 'e2', category: 'Relaxation', title: 'Lake Activities', description: 'Swimming, kayaking, or simply enjoying family fun by the water.', icon: 'Anchor' },
+            { _key: 'e3', category: 'Tranquility', title: 'Rest & Relaxation', description: 'Peaceful moments fishing by the lake or reading on the dock.', icon: 'Fish' }
+          ],
           of: [
             {
               type: 'object',
@@ -181,11 +192,19 @@ export default defineType({
         { name: 'title', title: 'Section Main Title', type: 'string', initialValue: 'Nestled in Nature' },
         { name: 'locationName', title: 'Location Area Name (e.g. Lake Lafayette)', type: 'string', initialValue: 'Lake Lafayette' },
         { name: 'locationAddress', title: 'City / State Text Line', type: 'string', initialValue: 'Odessa, Missouri 64076' },
-        { name: 'body', title: 'Location Section Paragraph', type: 'text' },
+        { name: 'body', title: 'Location Section Paragraph', type: 'text', initialValue: "East Pointe is strategically located in the heart of Missouri's beautiful countryside. A perfect escape that feels worlds away, yet conveniently close to major hubs." },
         {
           name: 'distances',
           title: 'Distance/Travel Time Cards',
           type: 'array',
+          initialValue: [
+            { _key: 'd1', time: '35 Mins', destination: 'Downtown Kansas City', icon: 'Car' },
+            { _key: 'd2', time: '2.5 Hours', destination: 'St. Louis', icon: 'Car' },
+            { _key: 'd3', time: '40 Mins', destination: 'MCI Airport', icon: 'Plane' },
+            { _key: 'd4', time: '32 Mins', destination: 'Truman Sports Complex', icon: 'Car' },
+            { _key: 'd5', time: '25 Mins', destination: 'Warrensburg', icon: 'Car' },
+            { _key: 'd6', time: '15 Mins', destination: 'Powell Gardens', icon: 'Car' }
+          ],
           of: [
             {
               type: 'object',
@@ -223,6 +242,12 @@ export default defineType({
           name: 'items',
           title: 'Amenities Highlight Cards',
           type: 'array',
+          initialValue: [
+            { _key: 'a1', title: '5-Star Service', description: '24/7 Concierge & Support', icon: 'Star' },
+            { _key: 'a2', title: 'Fresh Air', description: 'Secluded Private Locations', icon: 'Wind' },
+            { _key: 'a3', title: 'Secure & Safe', description: 'Smart Locks & Security', icon: 'ShieldCheck' },
+            { _key: 'a4', title: 'Family Ready', description: 'Games, Cribs & More', icon: 'Users' }
+          ],
           of: [
             {
               type: 'object',
@@ -258,7 +283,7 @@ export default defineType({
       description: 'Earthy, gold bottom banner inviting guests to complete reservations or memberships.',
       fields: [
         { name: 'title', title: 'CTA Main Heading', type: 'string', initialValue: 'Ready to Escape?' },
-        { name: 'subtitle', title: 'CTA Subheading Intro text', type: 'text' },
+        { name: 'subtitle', title: 'CTA Subheading Intro text', type: 'text', initialValue: 'Join our family of travelers and experience the difference of a true luxury retreat.' },
         { 
           name: 'backgroundImage', 
           title: 'CTA Background Image', 

@@ -20,7 +20,7 @@ export default defineType({
       description: 'The main promotional banner displayed at the top of the cabins page.',
       fields: [
         { name: 'title', title: 'Hero Title', type: 'string', initialValue: 'Lake Cabin Collection' },
-        { name: 'subtitle', title: 'Hero Subtitle', type: 'text' },
+        { name: 'subtitle', title: 'Hero Subtitle', type: 'text', initialValue: "Discover our range of cabins designed to accommodate all group sizes, whether you're planning a cozy getaway for two or a lively retreat for a large gathering." },
         { 
           name: 'image', 
           title: 'Hero Background Image', 
@@ -39,7 +39,7 @@ export default defineType({
       fields: [
         { name: 'label', title: 'Section Small Label', type: 'string', initialValue: 'Our Portfolio' },
         { name: 'title', title: 'Section Main Heading', type: 'string', initialValue: 'Find Your Perfect Escape' },
-        { name: 'body', title: 'Description Paragraph', type: 'text' },
+        { name: 'body', title: 'Description Paragraph', type: 'text', initialValue: "Each cabin is thoughtfully crafted to match your vacation intentions. Click on any cabin below to view full details, sleeping arrangements, and amenities." },
       ],
     }),
     defineField({
@@ -73,8 +73,8 @@ export default defineType({
       description: 'An invitation section encouraging visitors to schedule a tour or booking.',
       fields: [
         { name: 'title', title: 'Heading Title', type: 'string', initialValue: 'Come See Us' },
-        { name: 'subtitle', title: 'Sub-heading Caption', type: 'text' },
-        { name: 'body', title: 'Section Description Text', type: 'text' },
+        { name: 'subtitle', title: 'Sub-heading Caption', type: 'text', initialValue: "Visit our offices to explore our stunning lakeside cabins!" },
+        { name: 'body', title: 'Section Description Text', type: 'text', initialValue: "Experience the serene surroundings firsthand and discover your perfect getaway. We look forward to welcoming you!" },
       ],
     }),
     defineField({

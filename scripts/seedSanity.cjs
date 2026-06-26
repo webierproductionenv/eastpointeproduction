@@ -12,7 +12,7 @@
 
 const { createClient } = require('@sanity/client');
 
-const SANITY_PROJECT_ID = 'mjed1aqj';
+const SANITY_PROJECT_ID = 'jlknt03a';
 const SANITY_DATASET = 'production';
 const SANITY_TOKEN = process.env.SANITY_TOKEN;
 

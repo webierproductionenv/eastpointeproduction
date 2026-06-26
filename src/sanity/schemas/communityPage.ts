@@ -11,7 +11,7 @@ export default defineType({
       type: 'object',
       fields: [
         { name: 'title', title: 'Title', type: 'string', initialValue: 'Gather & Celebrate' },
-        { name: 'subtitle', title: 'Subtitle', type: 'string' },
+        { name: 'subtitle', title: 'Subtitle', type: 'string', initialValue: 'Create lasting memories in the heart of nature.' },
         { name: 'image', title: 'Hero Image', type: 'image', options: { hotspot: true } },
       ],
     }),
@@ -22,7 +22,7 @@ export default defineType({
       fields: [
         { name: 'label', title: 'Label', type: 'string', initialValue: 'Hosted at East Pointe' },
         { name: 'title', title: 'Title', type: 'string', initialValue: 'Unforgettable Gatherings' },
-        { name: 'body', title: 'Body Text', type: 'text' },
+        { name: 'body', title: 'Body Text', type: 'text', initialValue: "East Pointe isn't just for quiet getaways; it's a vibrant backdrop for your most important milestones. From intimate lakeside weddings to productive corporate retreats, our grounds offer the perfect blend of privacy and community." },
       ],
     }),
     defineField({
@@ -32,6 +32,7 @@ export default defineType({
       type: 'array',
       initialValue: [
         {
+          _key: 'item1',
           _type: 'eventCard',
           title: 'Intimate Weddings',
           description: 'Say "I do" with the lake as your witness. Our grounds provide a stunning, natural cathedral for ceremonies up to 50 guests.',
@@ -39,6 +40,7 @@ export default defineType({
           features: ['Lakeside Ceremonies', 'Bridal Cabin Packages', 'Photography Access']
         },
         {
+          _key: 'item2',
           _type: 'eventCard',
           title: 'Family Reunions',
           description: 'Reconnect without distractions. Book multiple cabins to keep the family close while giving everyone their own private space.',
@@ -46,6 +48,7 @@ export default defineType({
           features: ['Communal Fire Pits', 'Large Group Dining', 'Safe Kids Play Areas']
         },
         {
+          _key: 'item3',
           _type: 'eventCard',
           title: 'Corporate Retreats',
           description: 'Step away from the boardroom. Our inspiring environment fosters creativity, team bonding, and strategic thinking.',
@@ -62,8 +65,8 @@ export default defineType({
       fields: [
         { name: 'label', title: 'Label', type: 'string', initialValue: 'Personal Concierge' },
         { name: 'title', title: 'Title', type: 'string', initialValue: 'Start Planning Your Event' },
-        { name: 'body', title: 'Body Text', type: 'text' },
-        { name: 'bulletPoints', title: 'Bullet Points', type: 'array', of: [{ type: 'string' }] },
+        { name: 'body', title: 'Body Text', type: 'text', initialValue: "We don't believe in automated forms for your special moments. Every event at East Pointe is tailored specifically to your vision. Connect directly with our Events Coordinator to discuss availability, packages, and custom arrangements." },
+        { name: 'bulletPoints', title: 'Bullet Points', type: 'array', of: [{ type: 'string' }], initialValue: ['Custom layout planning', 'Vendor recommendations (Catering, Florals, etc.)', 'Group accommodation discounts'] },
         { name: 'officeHours', title: 'Office Hours Text', type: 'string', initialValue: 'Office Hours: Mon-Fri, 9am - 5pm CST' },
       ],
     }),
