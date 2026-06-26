@@ -1,14 +1,8 @@
 {
-  "redirects": [
+  "rewrites": [
     {
-      "source": "/studio/:path*",
-      "destination": "/#/studio/:path*",
-      "permanent": false
-    },
-    {
-      "source": "/studio",
-      "destination": "/#/studio",
-      "permanent": false
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

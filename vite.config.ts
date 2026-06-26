@@ -8,6 +8,8 @@ export default defineConfig(({ mode }) => {
       server: {
         port: 3000,
         host: '0.0.0.0',
+        // SPA fallback: serve index.html for all routes so BrowserRouter works on refresh
+        historyApiFallback: true,
       },
       plugins: [react()],
       define: {

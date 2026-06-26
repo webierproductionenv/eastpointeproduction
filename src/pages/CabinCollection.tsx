@@ -263,8 +263,33 @@ const CabinCollection: React.FC = () => {
   const seoData = pageData?.seo;
   const comeSeeUs = pageData?.comeSeeUs;
 
+  // Local image fallbacks for cabins that don't have Sanity-uploaded images yet
+  const localImageFallbacks: Record<string, string[]> = {
+    'East Pointe Bayview': getImages('Bayview', 35, 'avif'),
+    'Aston Harbor': getImages('Aston Harbor', 23, 'avif'),
+    'Aspire': getImages('Aspire', 33, 'avif'),
+    'Cedar Pointe': getImages('Cedar Pointe', 42, 'avif'),
+    "Byrd's Nest": getImages("BYRD's Nest", 36, 'avif'),
+  };
+
   // Use CMS cabins if available, otherwise fallback to hardcoded
-  const displayCabins = (cmsCabins && cmsCabins.length > 0) ? cmsCabins : cabins;
+  // Map CMS field names to match the CabinData interface used by CabinModal
+  const displayCabins = (cmsCabins && cmsCabins.length > 0) ? cmsCabins.map((c: any, idx: number) => ({
+    id: c._id || idx + 1,
+    name: c.name,
+    sleeps: c.sleeps || 'TBD',
+    bedrooms: c.bedrooms || 'TBD',
+    baths: c.baths || 0,
+    desc: c.description || '',
+    status: c.status || 'Coming Soon',
+    sqFt: c.sqFt,
+    location: c.location || 'Odessa, MO',
+    bookingLink: c.bookingLink,
+    features: c.features,
+    sleepingArrangements: c.sleepingArrangements,
+    // Use CMS images if uploaded, otherwise fallback to local images
+    images: (c.images && c.images.length > 0) ? c.images : (localImageFallbacks[c.name] || []),
+  })) : cabins;
 
   const openModal = (cabin: CabinData) => {
     setSelectedCabin(cabin);

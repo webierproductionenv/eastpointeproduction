@@ -524,74 +524,55 @@ const Home: React.FC = () => {
           </FadeIn>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <FadeIn delay={0}>
-              <div className="bg-white p-10 shadow-sm rounded-sm h-full flex flex-col">
-                <div className="flex text-secondary mb-6">
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                </div>
-                <p className="text-stone-600 italic mb-8 flex-grow leading-relaxed">
-                  "The most restorative weekend of my life. The cabin was
-                  impeccable, and the silence of the forest was exactly what we
-                  needed."
-                </p>
-                <div>
-                  <h5 className="font-bold text-primary">Sarah Jenkins</h5>
-                  <p className="text-xs text-stone-400 uppercase tracking-wider">
-                    Atlanta, GA
+            {(testimonials && testimonials.length > 0
+              ? testimonials.slice(0, 3)
+              : [
+                  {
+                    name: "Sarah Jenkins",
+                    location: "Atlanta, GA",
+                    quote:
+                      "The most restorative weekend of my life. The cabin was impeccable, and the silence of the forest was exactly what we needed.",
+                    rating: 5,
+                  },
+                  {
+                    name: "Michael & David",
+                    location: "Charlotte, NC",
+                    quote:
+                      "East Pointe thought of everything. From the pre-stocked firewood to the locally sourced coffee awaiting our arrival. Pure magic.",
+                    rating: 5,
+                  },
+                  {
+                    name: "The Thompson Family",
+                    location: "Nashville, TN",
+                    quote:
+                      "We hosted our family reunion here. The communal spaces were perfect for gathering, yet everyone had their own private retreat.",
+                    rating: 5,
+                  },
+                ]
+            ).map((t: any, idx: number) => (
+              <FadeIn delay={idx * 150} key={idx}>
+                <div
+                  className={`bg-white p-10 shadow-sm rounded-sm h-full flex flex-col ${
+                    idx === 1 ? "transform md:-translate-y-4" : ""
+                  }`}
+                >
+                  <div className="flex text-secondary mb-6">
+                    {Array.from({ length: t.rating || 5 }).map((_, i) => (
+                      <Star key={i} size={16} fill="currentColor" />
+                    ))}
+                  </div>
+                  <p className="text-stone-600 italic mb-8 flex-grow leading-relaxed">
+                    "{t.quote}"
                   </p>
+                  <div>
+                    <h5 className="font-bold text-primary">{t.name}</h5>
+                    <p className="text-xs text-stone-400 uppercase tracking-wider">
+                      {t.location}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            </FadeIn>
-            <FadeIn delay={150}>
-              <div className="bg-white p-10 shadow-sm rounded-sm h-full flex flex-col transform md:-translate-y-4">
-                <div className="flex text-secondary mb-6">
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                </div>
-                <p className="text-stone-600 italic mb-8 flex-grow leading-relaxed">
-                  "East Pointe thought of everything. From the pre-stocked
-                  firewood to the locally sourced coffee awaiting our arrival.
-                  Pure magic."
-                </p>
-                <div>
-                  <h5 className="font-bold text-primary">Michael & David</h5>
-                  <p className="text-xs text-stone-400 uppercase tracking-wider">
-                    Charlotte, NC
-                  </p>
-                </div>
-              </div>
-            </FadeIn>
-            <FadeIn delay={300}>
-              <div className="bg-white p-10 shadow-sm rounded-sm h-full flex flex-col">
-                <div className="flex text-secondary mb-6">
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                  <Star size={16} fill="currentColor" />
-                </div>
-                <p className="text-stone-600 italic mb-8 flex-grow leading-relaxed">
-                  "We hosted our family reunion here. The communal spaces were
-                  perfect for gathering, yet everyone had their own private
-                  retreat."
-                </p>
-                <div>
-                  <h5 className="font-bold text-primary">
-                    The Thompson Family
-                  </h5>
-                  <p className="text-xs text-stone-400 uppercase tracking-wider">
-                    Nashville, TN
-                  </p>
-                </div>
-              </div>
-            </FadeIn>
+              </FadeIn>
+            ))}
           </div>
         </div>
       </section>
