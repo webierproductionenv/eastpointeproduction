@@ -53,21 +53,7 @@ export default defineType({
           features: ['High-Speed Wifi', 'Team Building Activities', 'Catering Partners']
         }
       ],
-      of: [
-        {
-          name: 'eventCard',
-          title: 'Event Card',
-          type: 'object',
-          fields: [
-            { name: 'title', title: 'Title', type: 'string' },
-            { name: 'description', title: 'Description', type: 'text' },
-            { name: 'image', title: 'Card Image', type: 'image', description: 'Upload an image for this card.', options: { hotspot: true } },
-            { name: 'icon', title: 'Icon', type: 'string', options: { list: [{ title: 'Heart', value: 'Heart' }, { title: 'Users', value: 'Users' }, { title: 'Briefcase', value: 'Briefcase' }] } },
-            { name: 'features', title: 'Features List', type: 'array', of: [{ type: 'string' }] },
-          ],
-          preview: { select: { title: 'title', media: 'image' } },
-        }
-      ],
+      of: [{ type: 'eventCard' }],
     }),
     defineField({
       name: 'concierge',

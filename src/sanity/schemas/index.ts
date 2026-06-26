@@ -8,6 +8,7 @@ import testimonial from './testimonial'
 import communityPage from './communityPage'
 import explorePage from './explorePage'
 import membershipPage from './membershipPage'
+import eventCard from './eventCard'
 
 export const schemaTypes = [
   // Global
@@ -25,4 +26,5 @@ export const schemaTypes = [
   cabin,
   amenity,
   testimonial,
+  eventCard,
 ]
