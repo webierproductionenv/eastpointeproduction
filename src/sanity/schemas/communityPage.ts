@@ -30,6 +30,29 @@ export default defineType({
       title: 'Event Type Cards',
       description: 'Add or remove event cards here. Each card will be displayed on the Community page.',
       type: 'array',
+      initialValue: [
+        {
+          _type: 'eventCard',
+          title: 'Intimate Weddings',
+          description: 'Say "I do" with the lake as your witness. Our grounds provide a stunning, natural cathedral for ceremonies up to 50 guests.',
+          icon: 'Heart',
+          features: ['Lakeside Ceremonies', 'Bridal Cabin Packages', 'Photography Access']
+        },
+        {
+          _type: 'eventCard',
+          title: 'Family Reunions',
+          description: 'Reconnect without distractions. Book multiple cabins to keep the family close while giving everyone their own private space.',
+          icon: 'Users',
+          features: ['Communal Fire Pits', 'Large Group Dining', 'Safe Kids Play Areas']
+        },
+        {
+          _type: 'eventCard',
+          title: 'Corporate Retreats',
+          description: 'Step away from the boardroom. Our inspiring environment fosters creativity, team bonding, and strategic thinking.',
+          icon: 'Briefcase',
+          features: ['High-Speed Wifi', 'Team Building Activities', 'Catering Partners']
+        }
+      ],
       of: [
         {
           name: 'eventCard',

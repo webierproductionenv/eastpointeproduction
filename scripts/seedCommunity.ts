@@ -72,14 +72,9 @@ async function seedCommunity() {
     });
   }
 
-  const doc = {
-    _id: 'communityPage',
-    _type: 'communityPage',
-    eventCards: eventCards
-  };
-
-  console.log('Writing communityPage document to Sanity...');
-  await client.createOrReplace(doc);
+  console.log('Writing communityPage eventCards to Sanity...');
+  await client.createIfNotExists({ _id: 'communityPage', _type: 'communityPage' });
+  await client.patch('communityPage').set({ eventCards: eventCards }).commit();
 
   console.log('Done! Community Page seeded.');
 }
